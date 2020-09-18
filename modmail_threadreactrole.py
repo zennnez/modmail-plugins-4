@@ -79,7 +79,7 @@ Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
             await self._remove_reaction(payload, emoji, member)
             return
         
-        rrole = config[emote]["role"]
+        role = config[emote]["role"]
         role = discord.utils.get(guild.roles, id=int(role))
 
         if role:
