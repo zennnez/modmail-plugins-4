@@ -16,7 +16,7 @@ class UnicodeEmoji(commands.Converter):
             return discord.PartialEmoji(name=argument, animated=False)
         raise commands.BadArgument('Unknown emoji')
 
-Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
+Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji, str]
 role_dictionary = {}
 thread_initialMessage=0
 
@@ -41,12 +41,12 @@ class Thread_ReactRoles(commands.Cog):
         ctx, 
         *, 
         emoji: Emoji, 
-        role: typing.Union[discord.Role, str.lower]
+        role: discord.Role
     ):
         """
         Assigns a role to an emote for tickets.
         """
-        emote = Emoji.name if Emoji.id is None else str(Emoji.id)
+        emote = emoji.name if emoji.id is None else str(emoji.id)
         role_id = discord.Role.id
 
         role_dictionary = {emote: role_id}
@@ -55,6 +55,10 @@ class Thread_ReactRoles(commands.Cog):
             data.update(role_dictionary)
             file.seek(0)
             json.dump(data, file)
+
+        valid, msg = self.valid_emoji(emote, config)
+        if not valid:
+            return await ctx.send(msg)
             
         await ctx.send("Reaction role added.")
     
