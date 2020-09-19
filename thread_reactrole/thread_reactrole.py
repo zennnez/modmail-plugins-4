@@ -2,8 +2,6 @@ import asyncio
 import emoji
 import re
 import typing
-import json
-from pathlib import Path, PurePath
 
 import discord
 from discord.ext import commands
@@ -20,15 +18,6 @@ class UnicodeEmoji(commands.Converter):
 Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji, str]
 role_dictionary = {}
 thread_initialMessage=0
-
-class Plugin:
-    @property
-    def path(self):
-        return PurePath("plugins") / self.user / self.repo / f"{self.name}-{self.branch}"
-
-    @property
-    def abs_path(self):
-        return Path(__file__).absolute().parent.parent / self.path
 
 class Thread_ReactRoles(commands.Cog):
 
@@ -56,13 +45,7 @@ class Thread_ReactRoles(commands.Cog):
         Assigns a role to an emote for tickets.
         """
         emote = emoji.name if emoji.id is None else str(emoji.id)
-
         role_dictionary = {emote: role.id}
-        with open("thread_reactrole.json", "r+") as file:
-            data=json.load(file)
-            data.update(role_dictionary)
-            file.seek(0)
-            json.dump(data, file)
 
         valid, msg = self.valid_emoji(emote, config)
         if not valid:
@@ -82,11 +65,7 @@ class Thread_ReactRoles(commands.Cog):
         """
 
         emote = emoji.name if emoji.id is None else str(emoji.id)
-        with open(Path(__file__).absolute().parent.parent / "thread_reactrole.json", "r+") as file:
-            data=json.load(file)
-            data.pop(emote, not_found=None)
-            file.seek(0)
-            json.dump(data, file)
+        role_dictionary.pop(emote, not_found=None)
     
     @commands.Cog.listener()
     async def reaction_add(
@@ -100,20 +79,18 @@ class Thread_ReactRoles(commands.Cog):
                 fetchMessage = await channel.history(limit=1, oldest_first=True)
                 thread_initialMessage = fetchMessage
 
-                with open(Path(__file__).absolute().parent.parent / "thread_reactrole.json", "r") as file:
-                    data=json.load(file)
-            
-                await self.bot.add_reaction(msg, emoji)
+                role_dictionary.get(emoji)
+                for emoji in role_dictionary:
+                    await self.bot.add_reaction(msg, emoji)
 
             if channel in self.bot.main_category.channels >1:
                 for channel in self.bot.main_category.channels:
                     fetchMessage = await channel.history(limit=1, oldest_first=True)
                     thread_initialMessage = fetchMessage
 
-                    with open(Path(__file__).absolute().parent.parent / "thread_reactrole.json", "r") as file:
-                        data=json.load(file)
-            
-                    await self.bot.add_reaction(msg, emoji)
+                    role_dictionary.get(emoji)
+                    for emoji in role_dictionary:
+                        await self.bot.add_reaction(msg, emoji)
 
 def setup(bot):
     bot.add_cog(Thread_ReactRoles(bot))
