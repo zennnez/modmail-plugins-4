@@ -83,9 +83,10 @@ class Thread_ReactRoles(commands.Cog):
         emoji: Emoji,
         msg: thread_initialMessage
     ):
-        for channel in ctx.thread:
-            fetchMessage = await channel.history(limit=1, oldest_first=True)
-        thread_initialMessage = fetchMessage
+        if self.bot.modmail_guild.create_text_channel:
+            for channel in ctx.thread:
+                fetchMessage = await channel.history(limit=1, oldest_first=True)
+            thread_initialMessage = fetchMessage
 
         with open("thread_reactrole.json", "r") as file:
             data=json.load(file)
