@@ -76,24 +76,3 @@ class Thread_ReactRoles(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Thread_ReactRoles(bot))
-
-"""
-
-"adding reaction"
-"fetch message id from initial message when thread is created"
-"fetch emote:role from JSON"
-"add reactions to message"
-
-"deleting reaction"
-"fetch message id from initial message when thread is created"
-"clear all reactions from message"
-"use 'adding reaction'"
-
-"on reacting"
-"fetch role associated with reaction"
-"give role to thread recipient"
-
-"on unreacting"
-"fetch role associated with reaction"
-"remove role from thread recipient"
-"""
