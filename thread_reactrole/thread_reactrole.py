@@ -21,6 +21,15 @@ Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji, str]
 role_dictionary = {}
 thread_initialMessage=0
 
+class Plugin:
+    @property
+    def path(self):
+        return PurePath("plugins") / self.user / self.repo / f"{self.name}-{self.branch}"
+
+    @property
+    def abs_path(self):
+        return Path(__file__).absolute().parent.parent / self.path
+
 class Thread_ReactRoles(commands.Cog):
 
     def __init__(self, bot):
