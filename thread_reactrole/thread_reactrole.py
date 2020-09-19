@@ -34,13 +34,13 @@ class Thread_ReactRoles(commands.Cog):
         """
         await ctx.send_help(ctx.command)
     
-    @commands.command(name="add", usage="[emoji] [role]")
+    @threadreactrole.command(name="add", usage="[emoji] [role]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     async def threadreactrole_add(
-        self,
-        ctx,
-        *
-        emoji: Emoji,
+        self, 
+        ctx, 
+        *, 
+        emoji: Emoji, 
         role: typing.Union[discord.Role, str.lower]
     ):
         """
@@ -56,12 +56,12 @@ class Thread_ReactRoles(commands.Cog):
             file.seek(0)
             json.dump(data, file)
     
-    @commands.command(name="remove", usage="[emoji]")
+    @threadreactrole.command(name="remove", usage="[emoji]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     async def threadreactrole_remove(
         self,
         ctx,
-        *
+        *,
         emoji: Emoji
     ):
         """
@@ -79,7 +79,7 @@ class Thread_ReactRoles(commands.Cog):
     async def reaction_add(
         self,
         ctx,
-        *
+        *,
         emoji: Emoji,
         msg: thread_initialMessage
     ):
