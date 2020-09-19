@@ -18,7 +18,7 @@ class UnicodeEmoji(commands.Converter):
 
 Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
 role_dictionary = {}
-thread_initialMessage = 0
+thread_initialMessage=0
 
 class Thread_ReactRoles(commands.Cog):
 
@@ -86,12 +86,22 @@ class Thread_ReactRoles(commands.Cog):
         if self.bot.modmail_guild.create_text_channel:
             for channel in ctx.thread:
                 fetchMessage = await channel.history(limit=1, oldest_first=True)
-            thread_initialMessage = fetchMessage
+                thread_initialMessage = fetchMessage
 
-        with open("thread_reactrole.json", "r") as file:
-            data=json.load(file)
+                with open("thread_reactrole.json", "r") as file:
+                    data=json.load(file)
             
-        await self.bot.add_reaction(msg, Emoji)
+                await self.bot.add_reaction(msg, emoji)
+
+            if channel in self.bot.main_category.channels >1:
+                for channel in self.bot.main_category.channels:
+                    fetchMessage = await channel.history(limit=1, oldest_first=True)
+                    thread_initialMessage = fetchMessage
+
+                    with open("thread_reactrole.json", "r") as file:
+                        data=json.load(file)
+            
+                    await self.bot.add_reaction(msg, emoji)
 
 def setup(bot):
     bot.add_cog(Thread_ReactRoles(bot))
