@@ -33,6 +33,16 @@ class Thread_ReactRoles(commands.Cog):
         """
         await ctx.send_help(ctx.command)
     
+        @threadreactrole.command(name="list")
+        @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
+        async def threadreactrole_list(
+            self,
+            ctx
+        ):
+            """
+            Lists reaction roles assigned.
+            """
+
     @threadreactrole.command(name="add", usage="[emoji] [role]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     async def threadreactrole_add(
@@ -46,6 +56,10 @@ class Thread_ReactRoles(commands.Cog):
         """
         emote = emoji.name if emoji.id is None else str(emoji.id)
         role_dictionary = {emote: role.id}
+
+        valid, msg = self.valid_emoji(emote, config)
+        if not valid:
+            return await ctx.send(msg)
             
         await ctx.send("Reaction role added.")
     
@@ -61,8 +75,10 @@ class Thread_ReactRoles(commands.Cog):
         """
 
         emote = emoji.name if emoji.id is None else str(emoji.id)
-        role_dictionary.pop(emote, not_found=None)
-    
+        role_dictionary.pop(emote)
+
+        await ctx.send("Reaction role removed.")
+        
     @commands.Cog.listener()
     async def reaction_add(
         self,
