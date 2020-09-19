@@ -34,7 +34,7 @@ class Thread_ReactRoles(commands.Cog):
         await ctx.send_help(ctx.command)
     
     @commands.command(name="add", usage="[emoji] [role]")
-    @checks.has.permissions(PermissionLevel.ADMINISTRATOR)
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     async def threadreactrole_add(
         self,
         ctx,
@@ -56,7 +56,7 @@ class Thread_ReactRoles(commands.Cog):
             json.dump(data, file)
     
     @commands.command(name="remove", usage="[emoji]")
-    @checks.has.permissions(PermissionLevel.ADMINISTRATOR)
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     async def threadreactrole_remove(
         self,
         ctx,
