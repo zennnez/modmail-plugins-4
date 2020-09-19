@@ -2,6 +2,7 @@ import asyncio
 import emoji
 import re
 import typing
+import json
 
 import discord
 from discord.ext import commands
@@ -31,13 +32,13 @@ class ReactRoles(commands.Cog):
         Creates tickets with reactions, allowing users to assign roles to ticket recipients.
         """
         await ctx.send_help(ctx.command)
-
-    @commands.command(usage="[emoji] [role]")
+    
+    @commands.command(name="add", usage="[emoji] [role]")
     @checks.has.permissions(PermissionLevel.ADMINISTRATOR)
     async def threadreactrole_add(
         self,
         ctx,
-        user: thread.recipient,
+        *
         emoji: Emoji,
         role: Union[discord.Role, str.lower]
     ):
@@ -48,28 +49,40 @@ class ReactRoles(commands.Cog):
         role_id = discord.Role.id
 
         role_dictionary = {emote: role_id}
-        with open("thread_reactrole.json"
+        with open("thread_reactrole.json", "r+") as file:
+            data=json.load(file)
+            data.update(role_dictionary)
+            file.seek(0)
+            json.dump(data, file)
+    
+    @commands.command(name="remove", usage="[emoji]")
+    @checks.has.permissions(PermissionLevel.ADMINISTRATOR)
+    async def threadreactrole_remove(
+        self,
+        ctx,
+        *
+        emoji: Emoji
+    ):
+        """
+        Removes the role from the emote for tickets.
+        """
 
+        emote = emoji.name if emoji.id is None else str(emoji.id)
+        with open("thread_reactrole.json", "r+") as file:
+            data=json.load(file)
+            data.pop(emote, not_found=None)
+            file.seek(0)
+            json.dump(data, file)
 
 def setup(bot):
     bot.add_cog(ReactRoles(bot))
 
 """
-"fetch emoji"
-"fetch role"
-"assign emoji to role"
-"if there are open threads, use 'adding reaction'"
-"finally, store emoji:role into JSON"
 
 "adding reaction"
 "fetch message id from initial message when thread is created"
 "fetch emote:role from JSON"
 "add reactions to message"
-
-"delete command" "usage = reactrole remove [emoji] [optional: role]"
-"find emoji from JSON"
-"if there are open threads, use 'removing reaction'"
-"finally, remove emoji:role from JSON"
 
 "deleting reaction"
 "fetch message id from initial message when thread is created"
