@@ -46,7 +46,8 @@ class Thread_ReactRoles(commands.Cog):
         """
         await ctx.send_help(ctx.command)
 
-        print(role_dictionary.get(emoji))
+        emote = emoji.name if emoji.id is None else str(emoji.id)
+        print(role_dictionary.get(emote))
 
     @threadreactrole.command(name="add", usage="[emoji] [role]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
