@@ -18,6 +18,7 @@ class UnicodeEmoji(commands.Converter):
 
 Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
 role_dictionary = {}
+thread_initialMessage = 0
 
 class Thread_ReactRoles(commands.Cog):
 
