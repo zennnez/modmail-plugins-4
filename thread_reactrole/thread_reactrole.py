@@ -46,10 +46,6 @@ class Thread_ReactRoles(commands.Cog):
         """
         emote = emoji.name if emoji.id is None else str(emoji.id)
         role_dictionary = {emote: role.id}
-
-        valid, msg = self.valid_emoji(emote, config)
-        if not valid:
-            return await ctx.send(msg)
             
         await ctx.send("Reaction role added.")
     
