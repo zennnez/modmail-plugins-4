@@ -47,7 +47,7 @@ class Thread_ReactRoles(commands.Cog):
         Assigns a role to an emote for tickets.
         """
         emote = emoji.name if emoji.id is None else str(emoji.id)
-        role_id = discord.Role.id
+        role_id = role.id
 
         role_dictionary = {emote: role_id}
         with open("thread_reactrole.json", "r+") as file:
