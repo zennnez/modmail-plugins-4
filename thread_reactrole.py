@@ -19,7 +19,7 @@ class UnicodeEmoji(commands.Converter):
 Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
 role_dictionary = {}
 
-class ReactRoles(commands.Cog):
+class Thread_ReactRoles(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -75,7 +75,7 @@ class ReactRoles(commands.Cog):
             json.dump(data, file)
 
 def setup(bot):
-    bot.add_cog(ReactRoles(bot))
+    bot.add_cog(Thread_ReactRoles(bot))
 
 """
 
