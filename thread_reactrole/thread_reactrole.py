@@ -46,7 +46,7 @@ class Thread_ReactRoles(commands.Cog):
         """
         Assigns a role to an emote for tickets.
         """
-        emote = emoji.name if emoji.id is None else str(emoji.id)
+        emote = Emoji.name if Emoji.id is None else str(Emoji.id)
         role_id = discord.Role.id
 
         role_dictionary = {emote: role_id}
@@ -55,6 +55,8 @@ class Thread_ReactRoles(commands.Cog):
             data.update(role_dictionary)
             file.seek(0)
             json.dump(data, file)
+            
+        await ctx.send("Reaction role added.")
     
     @threadreactrole.command(name="remove", usage="[emoji]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
