@@ -20,6 +20,7 @@ commands.group(name="reactrole" invoke_without_command=True)
 @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
 async def reactrole(self, ctx: commands.Context):
     "Creates tickets with reactions, allowing users to assign roles to ticket recipients."
+    await ctx.send_help(ctx.command)
 
 "add command" "usage = reactrole add [emoji] [role]"
 "fetch emoji"
