@@ -12,6 +12,10 @@ from core.models import PermissionLevel
 "master command"
 class ReactRoles(commands.Cog):
 
+    def __init__(self, bot):
+        self.bot = bot
+        self.db = bot.plugin_db.get_partition(self)
+        
 commands.group(name="reactrole" invoke_without_command=True)
 @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
 async def reactrole(self, ctx: commands.Context):
