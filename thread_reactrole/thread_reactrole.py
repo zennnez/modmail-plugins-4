@@ -34,7 +34,7 @@ class Thread_ReactRoles(commands.Cog):
         """
         await ctx.send_help(ctx.command)
     
-    @threadreactrole.command(name="list")
+    @threadreactrole.command(name="list", usage="[emote]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     async def threadreactrole_list(
         self,
@@ -45,35 +45,8 @@ class Thread_ReactRoles(commands.Cog):
         Lists reaction roles assigned.
         """
         await ctx.send_help(ctx.command)
-        
-        if emoji is not None:
-            val = self.bot.snippets.get(emoji)
-            if val is None:
-                embed = create_not_found_embed(emoji, role_dictionary.keys(), "Reactions")
-            else:
-                embed = discord.Embed(
-                    title=f'Reaction - "{emoji}":', description=val, color=self.bot.main_color
-                )
-            return await ctx.send(embed=embed)
 
-        if not role_dictionary:
-            embed = discord.Embed(
-                color=self.bot.error_color, description="You don't have any reactions assigned at the moment."
-            )
-            embed.set_footer(text=f'Check "{self.bot.prefix}trr add" to add a reaction.')
-            embed.set_author(name="Reactions", icon_url=ctx.guild.icon_url)
-            return await ctx.send(embed=embed)
-
-            embeds = []
-
-        for i, names in enumerate(zip_longest(*(iter(sorted(role_dictionary)),) * 15)):
-            description = format_description(i, emoji)
-            embed = discord.Embed(color=self.bot.main_color, description=description)
-            embed.set_author(name="Reactions", icon_url=ctx.guild.icon_url)
-            embeds.append(embed)
-
-        session = EmbedPaginatorSession(ctx, *embeds)
-        await session.run()
+        print(role_dictionary.keys(emoji))
 
     @threadreactrole.command(name="add", usage="[emoji] [role]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
