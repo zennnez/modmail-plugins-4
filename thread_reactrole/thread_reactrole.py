@@ -73,6 +73,23 @@ class Thread_ReactRoles(commands.Cog):
             data.pop(emote, not_found=None)
             file.seek(0)
             json.dump(data, file)
+    
+    @commands.Cog.listener()
+    async def reaction_add(
+        self,
+        ctx,
+        *
+        emoji: Emoji,
+        msg: thread_initialMessage
+    ):
+        for channel in ctx.thread:
+            fetchMessage = await channel.history(limit=1, oldest_first=True)
+        thread_initialMessage = fetchMessage
+
+        with open("thread_reactrole.json", "r") as file:
+            data=json.load(file)
+            
+        await self.bot.add_reaction(msg, Emoji)
 
 def setup(bot):
     bot.add_cog(Thread_ReactRoles(bot))
