@@ -34,7 +34,7 @@ class Thread_ReactRoles(commands.Cog):
         """
         await ctx.send_help(ctx.command)
     
-    @threadreactrole.command(name="list", usage="[emote]")
+    @threadreactrole.command(name="list", usage="[emoji]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     async def threadreactrole_list(
         self,
@@ -46,7 +46,7 @@ class Thread_ReactRoles(commands.Cog):
         """
         await ctx.send_help(ctx.command)
 
-        print(role_dictionary.keys(emoji))
+        print(role_dictionary.get(emoji))
 
     @threadreactrole.command(name="add", usage="[emoji] [role]")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
