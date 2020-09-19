@@ -1,90 +1,52 @@
+"import whatever is needed"
 import asyncio
 import emoji
-import re
-import typing
 
 import discord
 from discord.ext import commands
 
 from core import checks
 from core.models import PermissionLevel
-from core.thread import thread
+"set up emotes"
 
-class UnicodeEmoji(commands.Converter):
-    async def convert(self, ctx, argument):
-        if argument in emoji.UNICODE_EMOJI:
-            return discord.PartialEmoji(name=argument, animated=False)
-        raise commands.BadArgument('Unknown emoji')
+"master command"
+class ReactRoles(commands.Cog):
 
-Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
+commands.group(name="reactrole" invoke_without_command=True)
+@checks.has_permissions(PermissionLevel.ADMINISTRATOR)
+async def reactrole(self, ctx: commands.Context):
+    "Creates tickets with reactions, allowing users to assign roles to ticket recipients."
 
-@commands.group(aliases=["reactrole"], invoke_without_command=True,)
-    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def reactrole(self, ctx: commands.Context):
-        """
-        When thread is created, reactions are added.
-        These reactions can be used to assign oles to users.
-        """
+"add command" "usage = reactrole add [emoji] [role]"
+"fetch emoji"
+"fetch role"
+"assign emoji to role"
+"if there are open threads, use 'adding reaction'"
+"finally, store emoji:role into JSON"
 
-    @snippet.command(name="add")
-    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def reactrole_add(self, ctx, user: Optional[User] = None, *, role: discord.Role, emoji: Emoji,):
-        """
-        Adds reaction to beginning of future threads.
-        """
-        user = thread.recipient
+"adding reaction"
+"fetch message id from initial message when thread is created"
+"fetch emote:role from JSON"
+"add reactions to message"
 
-        emote = emoji.name if emoji.id is None else str(emoji.id)
-        msg= await thread.send(message)
+"delete command" "usage = reactrole remove [emoji] [optional: role]"
+"find emoji from JSON"
+"if there are open threads, use 'removing reaction'"
+"finally, remove emoji:role from JSON"
 
-        await self.db.find_one_and_update(
-            {"_id": "config"}, {"$set": {emote: {"role": role.id, "state": "unlocked"}}},
-            upsert=True)
-        await self.bot.add_reaction(msg, emoji)
+"deleting reaction"
+"fetch message id from initial message when thread is created"
+"clear all reactions from message"
+"use 'adding reaction'"
 
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, User=None, payload):
-        if not payload.guild_id:
-            return
-        
-        config = await self.db.find_one({"_id": "config"})
-        
-        emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
-        emoji = payload.emoji.name if payload.emoji.id is None else payload.emoji
-        
-        guild = self.bot.get_guild(payload.guild_id)
-        member = discord.utils.get(guild.members, id=payload.user_id)
-        
-        if member.bot:
-            return
-        
-        try:
-            msg_id = config[emote]["msg_id"]
-        except (KeyError, TypeError):
-            return
-        
-        if payload.message_id != int(msg_id):
-            return
-        
-        ignored_roles = config[emote].get("ignored_roles")
-        if ignored_roles:
-            for role_id in ignored_roles:
-                role = discord.utils.get(guild.roles, id=role_id)
-                if role in member.roles:
-                    await self._remove_reaction(payload, emoji, member)
-                    return
-        
-        state = config[emote].get("state", "unlocked")
-        if state and state == "locked":
-            await self._remove_reaction(payload, emoji, member)
-            return
-        
-        role = config[emote]["role"]
-        role = discord.utils.get(guild.roles, id=int(role))
+"on reacting"
+"fetch role associated with reaction"
+"give role to thread recipient"
 
-        if role:
-            await member.add_roles(role)
+"on unreacting"
+"fetch role associated with reaction"
+"remove role from thread recipient"
 
-
+"setup bot and add cog to plugin"
 def setup(bot):
-    bot.add_cog(ThreadReactRole(bot))
+    bot.add_cog(ReactRoles(bot))
