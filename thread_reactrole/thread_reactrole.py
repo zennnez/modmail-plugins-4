@@ -3,6 +3,7 @@ import emoji
 import re
 import typing
 import json
+from pathlib import Path, PurePath
 
 import discord
 from discord.ext import commands
@@ -72,7 +73,7 @@ class Thread_ReactRoles(commands.Cog):
         """
 
         emote = emoji.name if emoji.id is None else str(emoji.id)
-        with open(Path(__file__).absolute()./modmail/plugins/lohcy7391/modmail-plugins/thread_reactrole-master/"thread_reactrole.json", "r+") as file:
+        with open(Path(__file__).absolute().parent.parent / "thread_reactrole.json", "r+") as file:
             data=json.load(file)
             data.pop(emote, not_found=None)
             file.seek(0)
@@ -90,7 +91,7 @@ class Thread_ReactRoles(commands.Cog):
                 fetchMessage = await channel.history(limit=1, oldest_first=True)
                 thread_initialMessage = fetchMessage
 
-                with open(Path(__file__).absolute()./modmail/plugins/lohcy7391/modmail-plugins/thread_reactrole-master/"thread_reactrole.json", "r") as file:
+                with open(Path(__file__).absolute().parent.parent / "thread_reactrole.json", "r") as file:
                     data=json.load(file)
             
                 await self.bot.add_reaction(msg, emoji)
@@ -100,7 +101,7 @@ class Thread_ReactRoles(commands.Cog):
                     fetchMessage = await channel.history(limit=1, oldest_first=True)
                     thread_initialMessage = fetchMessage
 
-                    with open(Path(__file__).absolute()./modmail/plugins/lohcy7391/modmail-plugins/thread_reactrole-master/"thread_reactrole.json", "r") as file:
+                    with open(Path(__file__).absolute().parent.parent / "thread_reactrole.json", "r") as file:
                         data=json.load(file)
             
                     await self.bot.add_reaction(msg, emoji)
