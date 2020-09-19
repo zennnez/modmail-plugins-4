@@ -44,6 +44,8 @@ class Thread_ReactRoles(commands.Cog):
         """
         Lists reaction roles assigned.
         """
+        await ctx.send_help(ctx.command)
+        
         if emoji is not None:
             val = self.bot.snippets.get(emoji)
             if val is None:
