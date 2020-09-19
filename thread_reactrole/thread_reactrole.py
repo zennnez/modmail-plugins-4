@@ -40,7 +40,7 @@ class Thread_ReactRoles(commands.Cog):
         ctx,
         *
         emoji: Emoji,
-        role: Union[discord.Role, str.lower]
+        role: typing.Union[discord.Role, str.lower]
     ):
         """
         Assigns a role to an emote for tickets.
