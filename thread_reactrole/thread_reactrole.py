@@ -34,24 +34,24 @@ class Thread_ReactRoles(commands.Cog):
         """
         await ctx.send_help(ctx.command)
     
-        @threadreactrole.command(name="list")
-        @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-        async def threadreactrole_list(
-            self,
-            ctx,
-            emoji = Emoji
+    @threadreactrole.command(name="list")
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
+    async def threadreactrole_list(
+        self,
+        ctx,
+        emoji = Emoji
         ):
-            """
-            Lists reaction roles assigned.
-            """
-            if emoji is not None:
-                val = self.bot.snippets.get(emoji)
-                if val is None:
-                    embed = create_not_found_embed(emoji, role_dictionary.keys(), "Reactions")
-                else:
-                    embed = discord.Embed(
-                        title=f'Reaction - "{emoji}":', description=val, color=self.bot.main_color
-                    )
+        """
+        Lists reaction roles assigned.
+        """
+        if emoji is not None:
+            val = self.bot.snippets.get(emoji)
+            if val is None:
+                embed = create_not_found_embed(emoji, role_dictionary.keys(), "Reactions")
+            else:
+                embed = discord.Embed(
+                    title=f'Reaction - "{emoji}":', description=val, color=self.bot.main_color
+                )
             return await ctx.send(embed=embed)
 
         if not role_dictionary:
