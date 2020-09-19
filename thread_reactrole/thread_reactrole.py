@@ -39,7 +39,6 @@ class Thread_ReactRoles(commands.Cog):
     async def threadreactrole_add(
         self, 
         ctx, 
-        *, 
         emoji: Emoji, 
         role: discord.Role
     ):
@@ -66,7 +65,6 @@ class Thread_ReactRoles(commands.Cog):
     async def threadreactrole_remove(
         self,
         ctx,
-        *,
         emoji: Emoji
     ):
         """
@@ -84,7 +82,6 @@ class Thread_ReactRoles(commands.Cog):
     async def reaction_add(
         self,
         ctx,
-        *,
         emoji: Emoji,
         msg: thread_initialMessage
     ):
