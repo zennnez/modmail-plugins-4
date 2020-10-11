@@ -15,8 +15,8 @@ def thread_react_roles(self) -> typing.Dict[str, str]:
 class Thread_ReactRoles(commands.Cog):
 
     def __init__(self, bot):
-    self.bot = bot
-    self.db = bot.plugin_db.get_partition(self)
+        self.bot = bot
+        self.db = bot.plugin_db.get_partition(self)
 
     @commands.group(name="threadreactrole", aliases=["trr"], invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
