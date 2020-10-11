@@ -35,3 +35,6 @@ async def threadreactrole(self, ctx, *, name: str.lower = None):
         embed.set_footer(text=f'Check "{self.bot.prefix}help trr add" to add a thread reaction.')
         embed.set_author(name="Thread React Roles", icon_url=ctx.guild.icon_url)
             return await ctx.send(embed=embed)
+        
+def setup(bot):
+    bot.add_cog(thread_reactrole(bot))
