@@ -1,4 +1,4 @@
-import asynchio
+import asyncio
 import emoji
 
 import discord
