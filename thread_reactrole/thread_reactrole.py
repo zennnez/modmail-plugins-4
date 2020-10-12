@@ -14,8 +14,8 @@ class thread_reactrole(commands.Cog):
         self.bot = bot
 
     @property
-        def thread_react_role(self) -> typing.Dict[str, str]:
-            return self.config["thread_react_role"]
+    def thread_react_role(self) -> typing.Dict[str, str]:
+        return self.config["thread_react_role"]
 
     @commands.group(name="threadreactrole", aliases=["trr"], invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
@@ -48,9 +48,9 @@ class thread_reactrole(commands.Cog):
 
         embeds = []
 
-    @commands.Cog.listener()
+    """@commands.Cog.listener()
     async def on_message(self, message):
-        print(message.content)
+        print(message.content)"""
 
 def setup(bot):
     bot.add_cog(thread_reactrole(bot))
