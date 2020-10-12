@@ -31,9 +31,9 @@ class thread_reactrole(commands.Cog):
         """
 
         if name is not None:
-            val = self.bot.thread_react_role.get(name)
+            val = self.thread_react_role.get(name)
             if val is None:
-                embed = create_not_found_embed(name, self.bot.thread_react_role.keys(), "Thread Reactions")
+                embed = create_not_found_embed(name, self.thread_react_role.keys(), "Thread Reactions")
             else:
                 embed = discord.Embed(
                     title=f'Thread Reactions - "{name}":"{key}"', description=val, color=self.bot.main_color
