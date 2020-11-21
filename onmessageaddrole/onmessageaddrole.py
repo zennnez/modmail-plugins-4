@@ -27,10 +27,11 @@ class OnMessageAddRole(commands.Cog):
         async def on_message(self, member):
             member = context.author
             for channel in channelroles:
-                if role in member.roles:
+                rg = channelroles.get(channel)
+                if role in context.author.roles:
                     continue
                 else:
-                    member.add_role(role)
+                    context.author.add_role(rg)
 
 
 def setup(bot):
