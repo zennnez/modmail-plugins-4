@@ -12,7 +12,7 @@ class OnMessageAddRole(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(name="onmessageaddrole", aliases=["omar"], invoke_without_command=True)
+    @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def omar(self, ctx, *):
         """Assign roles to members when they type in specified channel."""
