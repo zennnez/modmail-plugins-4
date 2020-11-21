@@ -14,7 +14,7 @@ class OnMessageAddRole(commands.Cog):
 
     @commands.group(name="onmessageaddrole", aliases=["omar"], invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.MODERATOR)
-    async def onmessageaddrole(self, ctx, role: discord.Role, ):
+    async def onmessageaddrole(self, ctx):
         """Assign roles to members when they type in specified channel."""
         channelroles = []
         
