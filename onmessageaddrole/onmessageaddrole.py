@@ -12,26 +12,26 @@ class OnMessageAddRole(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(name="omar", invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def omar(self, ctx, *):
         """Assign roles to members when they type in specified channel."""
         channelroles = []
         
-        @omar.command(name="add")
-        @checks.has_permissions(PermissionLevel.MODERATOR)
-        async def omar_add(self, ctx, *, role: discord.Role, channel:discord.TextChannel.id):
-            channelroles[channel]=role
+    @omar.command(name="add")
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def omar_add(self, ctx, *, role: discord.Role, channel:discord.TextChannel.id):
+        channelroles[channel]=role
 
-        @commands.Cog.listener()
-        async def on_message(self, member):
-            member = context.author
-            for channel in channelroles:
-                rg = channelroles.get(channel)
-                if role in context.author.roles:
-                    continue
-                else:
-                    context.author.add_role(rg)
+    @commands.Cog.listener()
+    async def on_message(self, member):
+        member = context.author
+        for channel in channelroles:
+            rg = channelroles.get(channel)
+            if role in context.author.roles:
+                continue
+            else:
+                context.author.add_role(rg)
 
 
 def setup(bot):
