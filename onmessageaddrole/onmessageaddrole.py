@@ -25,7 +25,7 @@ class OnMessageAddRole(commands.Cog):
         channelroles[channel]=role
 
     @commands.Cog.listener()
-    async def on_message(message):
+    async def on_message(message,*, role:discord.Role, channel:discord.TextChannel.id):
         for channel in channelroles:
             if role in message.author.roles:
                 continue
