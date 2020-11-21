@@ -11,12 +11,13 @@ from core.models import PermissionLevel
 class OnMessageAddRole(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        channelroles = []
 
     @commands.group(name="omar", invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def omar(self, ctx, *):
         """Assign roles to members when they type in specified channel."""
-        channelroles = []
+        await ctx.send_help(ctx.command)
         
     @omar.command(name="add")
     @checks.has_permissions(PermissionLevel.MODERATOR)
