@@ -18,7 +18,7 @@ class OnMessageAddRole(commands.Cog):
         """Assign roles to members when they type in specified channel."""
         channelroles = []
         
-        @omar.command(name="add")
+        @onmessageaddrole.command(name="add")
         @checks.has_permissions(PermissionLevel.MODERATOR)
         async def omar_add(self, ctx, *, role: discord.Role, channel:discord.TextChannel.id):
             channelroles[channel]=role
