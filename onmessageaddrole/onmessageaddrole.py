@@ -24,7 +24,7 @@ class OnMessageAddRole(commands.Cog):
     async def omar_add(self, ctx,*, role:discord.Role, channel:discord.TextChannel.id):
         channelroles[channel]=role
 
-    @commands.Cog.listener()
+    @bot.event()
     async def on_message(message):
         for channel in channelroles:
             if role in message.author.roles:
