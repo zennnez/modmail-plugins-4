@@ -1,3 +1,20 @@
+import asyncio
+import typing
+import emoji
+
+import discord
+from discord.ext import commands
+from discord.role import Role
+
+from core import checks
+from core.models import PermissionLevel
+from core.paginator import EmbedPaginatorSession
+from core.utils import *
+
+class ThreadReactions(commands.Cog):
+def __init__(self, bot):
+    self.bot = bot
+    
     @property
     def.thread_reactions(self) -> typing.Dict[str, int]:
         return self.config["thread_reactions"]
@@ -28,3 +45,6 @@
             return await ctx.send(embed=embed)
         
         embeds = []
+
+def setup(bot):
+    bot.add_cog(ThreadReactions(bot))
