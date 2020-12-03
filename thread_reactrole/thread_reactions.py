@@ -20,8 +20,8 @@ def __init__(self, bot):
         return self.config["thread_reactions"]
     
     @commands.group(aliases=["threadreactions", "threadreaction"], invoke_without_command=True)
-    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr(self, ctx, *, name:Emoji)"
+    @checks.has_permissions(PermissionLevel.SUPPORTER)
+    async def tr(self, ctx, *, name:Emoji)
         """
         help
         """
@@ -45,6 +45,59 @@ def __init__(self, bot):
             return await ctx.send(embed=embed)
         
         embeds = []
+        
+        for i, names in enumerate(zip_longest(*(iter(sorted(self.bot.snippets)),) * 15)):
+            description = format_description(i, names)
+            embed = discord.Embed(color=self.bot.main_color, description=description)
+            embed.set_author(name="Snippets", icon_url=ctx.guild.icon_url)
+            embeds.append(embed)
+
+        session = EmbedPaginatorSession(ctx, *embeds)
+        await session.run()
+        
+    @tr.command(name="add")
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
+    async def tr_add(self, ctx, name:Emoji, *, value: discord.Role)
+        """
+        help
+        """
+        
+        if name in self.bot.thread_reactions:
+            embed = discord.Embed(
+                title="Error",
+                color=self.bot.error_color,
+                description=f"Thread reaction {name} already exists.",
+            )
+            return await ctx.send(embed=embed)
+
+        self.bot.thread_reactions[name] = value
+        await self.bot.config.update()
+
+        embed = discord.Embed(
+            title="Added thread reaction",
+            color=self.bot.main_color,
+            description="Successfully created thread reaction.",
+        )
+        return await ctx.send(embed=embed)
+    
+    @tr.command(name="remove", aliases=["del", "delete"])
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
+    async def tr_remove(self, ctx, *, name:Emoji):
+        """
+        help
+        """
+
+        if name in self.bot.thread_reactions:
+            embed = discord.Embed(
+                title="Removed thread reaction",
+                color=self.bot.main_color,
+                description=f"Thread reaction {name} is now deleted.",
+            )
+            self.bot.thread_reaction.pop(name)
+            await self.bot.config.update()
+        else:
+            embed = create_not_found_embed(name, self.bot.thread_reactions.keys(), "Thread Reactions")
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
