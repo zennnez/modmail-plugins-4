@@ -24,7 +24,7 @@ class ThreadReactions(commands.Cog):
         self.bot = bot
     
     @property
-    def.thread_reactions(self) -> typing.Dict[str, int]:
+    def thread_reactions(self) -> typing.Dict[str, int]:
         return self.config["thread_reactions"]
     
     @commands.group(aliases=["threadreactions", "threadreaction"], invoke_without_command=True)
