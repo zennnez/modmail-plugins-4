@@ -20,8 +20,8 @@ class UnicodeEmoji(commands.Converter):
 Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
 
 class ThreadReactions(commands.Cog):
-def __init__(self, bot):
-    self.bot = bot
+    def __init__(self, bot):
+        self.bot = bot
     
     @property
     def.thread_reactions(self) -> typing.Dict[str, int]:
