@@ -11,6 +11,14 @@ from core.models import PermissionLevel
 from core.paginator import EmbedPaginatorSession
 from core.utils import *
 
+class UnicodeEmoji(commands.Converter):
+    async def convert(self, ctx, argument):
+        if argument in emoji.UNICODE_EMOJI:
+            return discord.PartialEmoji(name=argument, animated=False)
+        raise commands.BadArgument('Unknown emoji')
+
+Emoji = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
+
 class ThreadReactions(commands.Cog):
 def __init__(self, bot):
     self.bot = bot
@@ -62,6 +70,8 @@ def __init__(self, bot):
         help
         """
         
+        emote = name.name if name.id is None else str(name.id)
+        
         if name in self.bot.thread_reactions:
             embed = discord.Embed(
                 title="Error",
@@ -69,7 +79,15 @@ def __init__(self, bot):
                 description=f"Thread reaction {name} already exists.",
             )
             return await ctx.send(embed=embed)
-
+        
+        if value not in self.guild.roles:
+            embed = discord.Embed(
+                title="Error",
+                color=self.bot.error_color,
+                description=f"Role not found.",
+            )
+            return await ctx.send(embed=embed)
+        
         self.bot.thread_reactions[name] = value
         await self.bot.config.update()
 
@@ -86,7 +104,9 @@ def __init__(self, bot):
         """
         help
         """
-
+        
+        emote = name.name if name.id is None else str(name.id)
+        
         if name in self.bot.thread_reactions:
             embed = discord.Embed(
                 title="Removed thread reaction",
