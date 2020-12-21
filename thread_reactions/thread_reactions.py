@@ -114,7 +114,7 @@ class ThreadReactions(commands.Cog):
                     await msg.clear_reactions()
                     embed = discord.Embed(
                         title="Denied",
-                        color-=self.bot.error_color,
+                        color=self.bot.error_color,
                         description="Permission denied"
                     )
                     return await ctx.send(embed=embed)
@@ -146,7 +146,7 @@ class ThreadReactions(commands.Cog):
                     await msg.clear_reactions()
                     embed = discord.Embed(
                         title="Denied",
-                        color-=self.bot.error_color,
+                        color=self.bot.error_color,
                         description="Permission denied"
                     )
                     return await ctx.send(embed=embed)
