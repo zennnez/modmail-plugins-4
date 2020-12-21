@@ -110,7 +110,7 @@ class ThreadReactions(commands.Cog):
                         description=f"{Name} has now been assigned to {Value}"
                     )
                     return await ctx.send(embed=embed)
-                else if payload.emoji is self.bot.confirm_thread_creation_deny:
+                elif payload.emoji is self.bot.confirm_thread_creation_deny:
                     await msg.clear_reactions()
                     embed = discord.Embed(
                         title="Denied",
@@ -142,7 +142,7 @@ class ThreadReactions(commands.Cog):
                         description=f"{Value} has now been assigned to {Name}"
                     )
                     return await ctx.send(embed=embed)
-                else if payload.emoji is self.bot.confirm_thread_creation_deny:
+                elif payload.emoji is self.bot.confirm_thread_creation_deny:
                     await msg.clear_reactions()
                     embed = discord.Embed(
                         title="Denied",
@@ -191,7 +191,7 @@ class ThreadReactions(commands.Cog):
                     color=self.bot.main_color,
                     description=f"{Name} has been unassigned from {self.bot.thread_reactions[emote]}."
                 )
-        else if type(name) is discord.Role:
+        elif type(name) is discord.Role:
             for Emote, Role in self.bot.thread_reactions:
                 if Role == role:
                     self.bot.thread_reactions.pop(Emote)
