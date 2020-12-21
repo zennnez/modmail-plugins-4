@@ -131,8 +131,8 @@ class ThreadReactions(commands.Cog):
                 msg = await ctx.send(embed=embed)
                 await msg.add_reaction(self.bot.confirm_thread_creation_accept)
                 await msg.add_reaction(self.bot.confirm_thread_creation_deny)
-                await msg.on_raw_reaction_add(payload):
-                if payload.emoji is se;f.bot.confirm_thread_creation_accept:
+                await msg.on_raw_reaction_add(payload)
+                if payload.emoji is self.bot.confirm_thread_creation_accept:
                     await msg.clear_reactions()
                     await self.bot.thread_Reactions.pop(Emote)
                     await self.bot.thread_reactions.update({emote:role})
