@@ -165,46 +165,32 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="remove", aliases=["del", "delete"])
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_remove(self, ctx, *, name=emojiObj or discord.Role)
+    async def tr_remove(self, ctx, *, name=emojiObj)
         """
         Remove a reaction role.
 
         To remove a reaction role, do: '''
-        {prefix}tr remove emoji|role
+        {prefix}tr remove emoji
         '''
         """
 
         Name = str(name)
         emote = name.name if name.id is None else str(name.id)
         role = name.id
-        if type(name) is emojiObj:
-            if name not in self.bot.thread_reactions:
-                embed = discord.Embed(
-                    title="Error",
-                    color=self.bot.error_color,
-                    description=f"{Name} is unassigned."
-                )
-            else:
-                self.bot.thread_reactions.pop(emote)
-                embed = discord.Embed(
-                    title="Reaction role removed",
-                    color=self.bot.main_color,
-                    description=f"{Name} has been unassigned from {self.bot.thread_reactions[emote]}."
-                )
-        elif type(name) is discord.Role:
-            for Emote, Role in self.bot.thread_reactions:
-                if Role == role:
-                    self.bot.thread_reactions.pop(Emote)
-                    embed = discord.Embed(
-                        title="Reaction role removed",
-                        color=self.bot.main_color,
-                        description=f"{Name} has been unassigned from {str(Emote)}."
-                    )
-            embed= discord.Embed(
+        if emote not in self.bot.thread_reactions:
+            embed = discord.Embed(
                 title="Error",
                 color=self.bot.error_color,
                 description=f"{Name} is unassigned."
             )
+            return await ctx.send(embed=embed)
+
+        self.bot.thread_reactions.pop(emote)
+        embed = discord.Embed(
+            title="Reaction role removed",
+            color=self.bot.main_color,
+            description=f"{Name} has been unassigned from {self.bot.thread_reactions[emote]}."
+        )
         return await ctx.send(embed=embed)
 
     @commands.group(aliases=["threadreactionsthread", "threadreactionthread"], invoke_without_command=True)
