@@ -103,7 +103,7 @@ class ThreadReactions(commands.Cog):
                 await msg.on_raw_reaction_add(payload)
                 if payload.emoji is self.bot.confirm_thread_creation_accept:
                     await msg.clear_reactions()
-                    await self.bot.thread_reactions.update([emote:role])
+                    await self.bot.thread_reactions.update({emote:role})
                     embed = discord.Embed(
                         title="Reaction role updated",
                         color=self.bot.main_color,
@@ -135,7 +135,7 @@ class ThreadReactions(commands.Cog):
                 if payload.emoji is se;f.bot.confirm_thread_creation_accept:
                     await msg.clear_reactions()
                     await self.bot.thread_Reactions.pop(Emote)
-                    await self.bot.thread_reactions.update([emote:role])
+                    await self.bot.thread_reactions.update({emote:role})
                     embed = discord.Embed(
                         title="Reaction role updated",
                         color=self.bot.main_color,
