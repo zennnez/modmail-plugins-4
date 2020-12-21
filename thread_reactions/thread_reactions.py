@@ -50,9 +50,9 @@ class ThreadReactions(commands.Cog):
         """
 
         if not self.bot.thread_reactions:
-            embed = discord.Embed{
+            embed = discord.Embed(
                 color=self.bot.error_color, description="You dont have any reaction roles at the moment."
-            }
+            )
             embed.set_footer(text=f'Check "{self.bot.prefix}help tr add" to add a reaction role.')
             embed.set_author(name="Thread Reactions", icon_url=ctx.guild.icon_url)
             return await ctx.send(embed=embed)
