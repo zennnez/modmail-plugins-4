@@ -17,7 +17,7 @@ class ThreadReactions(commands.Cog):
         self.bot = bot
 
     @property
-    def thread_reactions(self) -> Dict[str, str]:
+    def thread_reactions(self) -> typing.DefaultDict[str, str]:
         return self["thread_reactions"]
 
     def tr_format_descriptiom(i, name, value):
