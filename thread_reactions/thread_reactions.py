@@ -17,7 +17,7 @@ class ThreadReactions(commands.Cog):
         self.bot = bot
 
     @property
-    def thread_reactions(self) -> typing.Dict{str, str}:
+    def thread_reactions(self) -> Dict[str, str]:
         return self["thread_reactions"]
 
     def tr_format_descriptiom(i, name, value):
@@ -26,7 +26,7 @@ class ThreadReactions(commands.Cog):
             for a, b, c in enumerate(takewhile(lambda x: x is not None, names, values), start=1)
         )
 
-    @commands.group(aliases=["threadreactions", "threadreaction"], invoke_without_command=True)
+    @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     async def tr(self, ctx):
         """
@@ -197,7 +197,7 @@ class ThreadReactions(commands.Cog):
             )
         return await ctx.send(embed=embed)
 
-    @commands.group(aliases=["threadreactionsthread", "threadreactionthread"], invoke_without_command=True)
+    @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     @checks.thread_only()
     async def thr(self, ctx):
