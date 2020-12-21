@@ -101,22 +101,23 @@ class ThreadReactions(commands.Cog):
                 await msg.add_reaction(self.bot.confirm_thread_creation_deny)
 
                 await msg.on_raw_reaction_add(payload)
-                    if payload.emoji is self.bot.confirm_thread_creation_accept:
-                        await msg.clear_reactions()
-                        await self.bot.thread_reactions.update([emote:role])
-                        embed = discord.Embed(
-                            title="Reaction role updated",
-                            color=self.bot.main_color,
-                            description=f"{Name} has now been assigned to {Value}"
-                        )
-                        return await ctx.send(embed=embed)
-                    else if payload.emoji is self.bot.confirm_thread_creation_deny:
-                        await msg.clear_reactions()
-                        embed = discord.Embed(
-                            title="Denied",
-                            color-=self.bot.error_color,
-                            description="Permission denied"
-                        )
+                if payload.emoji is self.bot.confirm_thread_creation_accept:
+                    await msg.clear_reactions()
+                    await self.bot.thread_reactions.update([emote:role])
+                    embed = discord.Embed(
+                        title="Reaction role updated",
+                        color=self.bot.main_color,
+                        description=f"{Name} has now been assigned to {Value}"
+                    )
+                    return await ctx.send(embed=embed)
+                else if payload.emoji is self.bot.confirm_thread_creation_deny:
+                    await msg.clear_reactions()
+                    embed = discord.Embed(
+                        title="Denied",
+                        color-=self.bot.error_color,
+                        description="Permission denied"
+                    )
+                    return await ctx.send(embed=embed)
                 await asyncio.sleep(60)
                 await msg.clear_reactions()
                 return
@@ -131,23 +132,24 @@ class ThreadReactions(commands.Cog):
                 await msg.add_reaction(self.bot.confirm_thread_creation_accept)
                 await msg.add_reaction(self.bot.confirm_thread_creation_deny)
                 await msg.on_raw_reaction_add(payload):
-                    if payload.emoji is se;f.bot.confirm_thread_creation_accept:
-                        await msg.clear_reactions()
-                        await self.bot.thread_Reactions.pop(Emote)
-                        await self.bot.thread_reactions.update([emote:role])
-                        embed = discord.Embed(
-                            title="Reaction role updated",
-                            color=self.bot.main_color,
-                            description=f"{Value} has now been assigned to {Name}"
-                        )
-                        return await ctx.send(embed=embed)
-                    else if payload.emoji is self.bot.confirm_thread_creation_deny:
-                        await msg.clear_reactions()
-                        embed = discord.Embed(
-                            title="Denied",
-                            color-=self.bot.error_color,
-                            description="Permission denied"
-                        )
+                if payload.emoji is se;f.bot.confirm_thread_creation_accept:
+                    await msg.clear_reactions()
+                    await self.bot.thread_Reactions.pop(Emote)
+                    await self.bot.thread_reactions.update([emote:role])
+                    embed = discord.Embed(
+                        title="Reaction role updated",
+                        color=self.bot.main_color,
+                        description=f"{Value} has now been assigned to {Name}"
+                    )
+                    return await ctx.send(embed=embed)
+                else if payload.emoji is self.bot.confirm_thread_creation_deny:
+                    await msg.clear_reactions()
+                    embed = discord.Embed(
+                        title="Denied",
+                        color-=self.bot.error_color,
+                        description="Permission denied"
+                    )
+                    return await ctx.send(embed=embed)
                 await asyncio.sleep(60)
                 await msg.clear_reactions()
                 return
@@ -216,6 +218,7 @@ class ThreadReactions(commands.Cog):
         {prefix}trt update
         '''
         """
+        return await ctx.send_help(ctx.command)
 
     @trt.command(name="update")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
