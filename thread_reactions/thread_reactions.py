@@ -331,7 +331,7 @@ class ThreadReactions(commands.Cog):
 
     @commands.Cog.listener()
     @checks.thread_only()
-    async def on_raw_reaction_add(self, ctx):
+    async def on_raw_reaction_add(self, ctx, thread, payload):
         if payload.message_id is not thread.genesis_message.id:
             return
         
