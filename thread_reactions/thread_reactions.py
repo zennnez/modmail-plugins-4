@@ -12,22 +12,12 @@ from core.paginator import EmbedPaginatorSession
 from core.utils import *
 from core.thread import Thread
 
-class UnicodeEmoji(commands.Converter):
-    async def convert(self, ctx, argument):
-        if argument in emoji.UNICODE_EMOJI:
-            return discord.PartialEmoji(name=argument, animated=False)
-        raise commands.BadArgument('Unknown emoji')
-    
-emojiObj = typing.Union[discord.PartialEmoji, discord.Emoji, UnicodeEmoji]
-
-
-
 class ThreadReactions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @property
-    def thread_reactions(self) -> typing.Dict[str, str]:
+    def thread_reactions(self) -> typing.Dict{str, str}:
         return self["thread_reactions"]
 
     def tr_format_descriptiom(i, name, value):
@@ -70,7 +60,7 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_add(self, ctx, name: emojiObj, *, value: discord.Role):
+    async def tr_add(self, ctx, name: discord.PartialEmoji or discord.Emoji, *, value: discord.Role):
         """
         Add a reaction role.
 
@@ -165,7 +155,7 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="remove", aliases=["del", "delete"])
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_remove(self, ctx, *, name=emojiObj or discord.Role):
+    async def tr_remove(self, ctx, *, name=discord.PartialEmoji or discord.Emoji or discord.Role):
         """
         Remove a reaction role.
 
@@ -177,7 +167,7 @@ class ThreadReactions(commands.Cog):
         Name = str(name)
         emote = name.name if name.id is None else str(name.id)
         role = name.id
-        if type(name) is emojiObj:
+        if type(name) is discord.PartialEmoji or discord.Emoji:
             if name not in self.thread_reactions:
                 embed = discord.Embed(
                     title="Error",
