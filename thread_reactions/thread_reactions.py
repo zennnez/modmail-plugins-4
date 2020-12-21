@@ -28,7 +28,7 @@ class ThreadReactions(commands.Cog):
 
     @property
     def thread_reactions(self) -> typing.Dict[str, str]:
-        return self.config["thread_reactions"]
+        return self["thread_reactions"]
 
     def tr_format_descriptiom(i, name, value):
         return "\n".join(
@@ -49,7 +49,7 @@ class ThreadReactions(commands.Cog):
         - '{prefix}thr add'
         """
 
-        if not self.thread_reactions:
+        if self.thread_reactions is None:
             embed = discord.Embed(
                 color=self.bot.error_color, description="You dont have any reaction roles at the moment."
             )
