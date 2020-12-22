@@ -16,9 +16,12 @@ class ThreadReactions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    def __init__(self, thread_reactions={})
+        self.thread_reactions = thread_reactions
+
     @property
     def thread_reactions(self) -> typing.DefaultDict[str, str]:
-        return self.thread_reactions
+        return self._thread_reactions
 
     def tr_format_descriptiom(i, name, value):
         return "\n".join(
