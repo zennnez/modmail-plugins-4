@@ -15,7 +15,7 @@ class ThreadReactions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    thread_reactions = dict()
+    thread_reactions = {}
 
     def tr_format_descriptiom(i, name, value):
         return "\n".join(
@@ -36,7 +36,7 @@ class ThreadReactions(commands.Cog):
         - '{prefix}thr add'
         """
 
-        if thread_reactions is None:
+        if not thread_reactions
             embed = discord.Embed(
                 color=self.bot.error_color, description="You dont have any reaction roles at the moment."
             )
@@ -165,7 +165,7 @@ class ThreadReactions(commands.Cog):
         emote = name.name if name.id is None else str(name.id)
         role = name.id
         if type(name) is discord.PartialEmoji or discord.Emoji:
-            if name not in thread_reactions:
+            if emote not in thread_reactions:
                 embed = discord.Embed(
                     title="Error",
                     color=self.bot.error_color,
