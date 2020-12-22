@@ -1,5 +1,4 @@
 import asyncio
-import typing
 from itertools import takewhile, zip_longest
 
 import discord
@@ -16,12 +15,7 @@ class ThreadReactions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def __init__(self, thread_reactions={}):
-        self.thread_reactions = thread_reactions
-
-    @property
-    def thread_reactions(self) -> typing.DefaultDict[str, str]:
-        return self._thread_reactions
+    thread_reactions = dict()
 
     def tr_format_descriptiom(i, name, value):
         return "\n".join(
@@ -42,7 +36,7 @@ class ThreadReactions(commands.Cog):
         - '{prefix}thr add'
         """
 
-        if self.thread_reactions is None:
+        if thread_reactions is None:
             embed = discord.Embed(
                 color=self.bot.error_color, description="You dont have any reaction roles at the moment."
             )
@@ -52,7 +46,7 @@ class ThreadReactions(commands.Cog):
 
         embeds = []
 
-        for i, names, values in enumerate(zip_longest(*(iter(sorted(self.thread_reactions)),) * 15)):
+        for i, names, values in enumerate(zip_longest(*(iter(sorted(thread_reactions)),) * 15)):
             description = tr_format_description(i, names, values)
             embed = discord.Embed(color=self.bot.main_color, description=description)
             embed.set_author(name="Thread Reactions", icon_url=ctx.guild.icon_url)
@@ -76,8 +70,8 @@ class ThreadReactions(commands.Cog):
         role = str(value.id)
         Name = str(name)
         Value = value.name
-        if name in self.thread_reactions:
-            if value is self.thread_reactions[name]:
+        if name in thread_reactions:
+            if value is thread_reactions[name]:
                 embed = discord.Embed(
                     title="Error",
                     color=self.bot.error_color,
@@ -87,7 +81,7 @@ class ThreadReactions(commands.Cog):
             else:
                 embed = discord.Embed(
                     color=self.bot.main_color,
-                    description=f"{Name} is currently assigned to {self.thread_reactions[name]}. Will you like to replace it with {Value}?"
+                    description=f"{Name} is currently assigned to {thread_reactions[name]}. Will you like to replace it with {Value}?"
                 )
                 msg = await ctx.send(embed=embed)
                 await msg.add_reaction(self.bot.confirm_thread_creation_accept)
@@ -96,7 +90,7 @@ class ThreadReactions(commands.Cog):
                 await msg.on_raw_reaction_add()
                 if payload.emoji is self.bot.confirm_thread_creation_accept:
                     await msg.clear_reactions()
-                    await self.thread_reactions.update({emote:role})
+                    await thread_reactions.update({emote:role})
                     embed = discord.Embed(
                         title="Reaction role updated",
                         color=self.bot.main_color,
@@ -115,7 +109,7 @@ class ThreadReactions(commands.Cog):
                 await msg.clear_reactions()
                 return
 
-        for Emote, Role in self.thread_reactions:
+        for Emote, Role in thread_reactions:
             if Role == role:
                 embed = discord.Emned(
                     color=self.bot.main_color,
@@ -127,8 +121,8 @@ class ThreadReactions(commands.Cog):
                 await msg.on_raw_reaction_add()
                 if payload.emoji is self.bot.confirm_thread_creation_accept:
                     await msg.clear_reactions()
-                    await self.thread_reactions.pop(Emote)
-                    await self.thread_reactions.update({emote:role})
+                    await thread_reactions.pop(Emote)
+                    await thread_reactions.update({emote:role})
                     embed = discord.Embed(
                         title="Reaction role updated",
                         color=self.bot.main_color,
@@ -147,7 +141,7 @@ class ThreadReactions(commands.Cog):
                 await msg.clear_reactions()
                 return
 
-        self.thread_reactions[name] = value
+        thread_reactions[name] = value
 
         embed = discord.Embed(
             title="Reaction role added",
@@ -171,23 +165,23 @@ class ThreadReactions(commands.Cog):
         emote = name.name if name.id is None else str(name.id)
         role = name.id
         if type(name) is discord.PartialEmoji or discord.Emoji:
-            if name not in self.thread_reactions:
+            if name not in thread_reactions:
                 embed = discord.Embed(
                     title="Error",
                     color=self.bot.error_color,
                     description=f"{Name} is unassigned."
                 )
             else:
-                self.thread_reactions.pop(emote)
+                thread_reactions.pop(emote)
                 embed = discord.Embed(
                     title="Reaction role removed",
                     color=self.bot.main_color,
-                    description=f"{Name} has been unassigned from {self.thread_reactions[emote]}."
+                    description=f"{Name} has been unassigned from {thread_reactions[emote]}."
                 )
         elif type(name) is discord.Role:
-            for Emote, Role in self.thread_reactions:
+            for Emote, Role in thread_reactions:
                 if Role == role:
-                    self.thread_reactions.pop(Emote)
+                    thread_reactions.pop(Emote)
                     embed = discord.Embed(
                         title="Reaction role removed",
                         color=self.bot.main_color,
@@ -223,7 +217,7 @@ class ThreadReactions(commands.Cog):
 
         async for message in ctx.channel.history(limit=1, oldest_first=True):
             await message.clear_reactions()
-            for Emote, Role in self.thread_reactions:
+            for Emote, Role in thread_reactions:
                 if Emote.isdigit() is True:
                     EmoteID = int(Emote)
                     EmoteOBJ = discord.utils.get(bot.get_all_emoji(), id=EmojiID)
@@ -260,7 +254,7 @@ class ThreadReactions(commands.Cog):
                 )
                 return await ctx.send(embed=embed)
 
-            for Emote, Role in self.thread_reactions:
+            for Emote, Role in thread_reactions:
                 if Emote.isdigit() is True:
                     EmoteID = int(Emote)
                     EmoteOBJ = discord.utils.get(bot.get_all_emoji(), id=EmojiID)
@@ -312,7 +306,7 @@ class ThreadReactions(commands.Cog):
     
     @commands.Cog.listener()
     async def on_thread_ready(self, thread):
-        for Emote, Role in self.thread_reactions:
+        for Emote, Role in thread_reactions:
             if Emote.isdigit() is True:
                 EmoteID = int(Emote)
                 EmoteOBJ = discord.utils.get(bot.get_all_emoji(), id=EmojiID)
@@ -330,8 +324,8 @@ class ThreadReactions(commands.Cog):
         
         emojiReaction = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
 
-        if emojiReaction in self.thread_reactions:
-            roleOBJ = self.guild.get_role(int(self.thread_reactions[emojiReaction]))
+        if emojiReaction in thread_reactions:
+            roleOBJ = self.guild.get_role(int(thread_reactions[emojiReaction]))
             if roleOBJ.position > payload.member.top_role.position:
                 await thread,genesis_message.remove(payload.memeber)
                 embed=discord.Embed(
@@ -358,8 +352,8 @@ class ThreadReactions(commands.Cog):
         emojiReaction = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
         memberOBJ = self.guild.get_member(payload.user_id)
 
-        if emojiReaction in self.thread_reactions:
-            roleOBJ = self.guild.get_role(int(self.thread_reactions[emojiReaction]))
+        if emojiReaction in thread_reactions:
+            roleOBJ = self.guild.get_role(int(thread_reactions[emojiReaction]))
             await thread.recipent.remove_roles(roleOBJ)
             embed = discord.Embed(
                 title="Role successfully removed",
