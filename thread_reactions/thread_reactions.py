@@ -15,6 +15,7 @@ class ThreadReactions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    global thread_reactions
     thread_reactions = {}
 
     def tr_format_descriptiom(i, name, value):
