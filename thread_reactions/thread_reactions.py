@@ -36,7 +36,7 @@ class ThreadReactions(commands.Cog):
         - '{prefix}thr add'
         """
 
-        if not thread_reactions
+        if not thread_reactions:
             embed = discord.Embed(
                 color=self.bot.error_color, description="You dont have any reaction roles at the moment."
             )
