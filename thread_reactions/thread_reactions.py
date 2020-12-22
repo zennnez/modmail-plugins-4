@@ -16,7 +16,7 @@ class ThreadReactions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def __init__(self, thread_reactions={})
+    def __init__(self, thread_reactions={}):
         self.thread_reactions = thread_reactions
 
     @property
