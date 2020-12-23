@@ -169,8 +169,6 @@ class ThreadReactions(commands.Cog):
     @commands.Cog.listener()
     @checks.thread_only()
     async def on_raw_reaction_add(self, payload):
-        if payload.guild_id is not int(self.bot.guild_id):
-            return
 
         Emote = payload.emoji.name if payload.emoji.id is none else str(payload.emoji.id)
         Guild = discord.utils.get(self.bot.guilds, id=payload.guild_id)
@@ -191,8 +189,6 @@ class ThreadReactions(commands.Cog):
     @commands.Cog.listener()
     @checks.thread_only()
     async def on_raw_reaction_remove(self, payload):
-        if payload.guild_id is not int(self.bot.guild_id):
-            return
 
         Emote = payload.emoji.name if payload.emoji.id is none else str(payload.emoji.id)
         Guild = discord.utils.get(self.bot.guilds, id=payload.guild_id)
