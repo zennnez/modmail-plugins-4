@@ -1,7 +1,6 @@
 import asyncio
 import emoji
 import typing
-from itertools import takewhile, zip_longest
 
 import discord
 from discord.ext import commands
@@ -134,7 +133,7 @@ class ThreadReactions(commands.Cog):
     @thr.command(name="update")
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def thr_update(self, ctx, thread):
+    async def thr_update(self, ctx):
         """
         Updates reactions on thread genesis message.
         """
