@@ -45,7 +45,7 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr(self, ctx):
+    async def tr_add(self, ctx):
         """
         help
         """
