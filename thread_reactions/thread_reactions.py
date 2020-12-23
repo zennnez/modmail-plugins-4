@@ -69,7 +69,7 @@ class ThreadReactions(commands.Cog):
 
         for key in thread_reactions:
             if thread_reactions[key] == role:
-                await thread_reactions.pop(key)
+                thread_reactions.pop(key)
                 break
 
         thread_reactions[emote] = role
@@ -93,7 +93,7 @@ class ThreadReactions(commands.Cog):
         emote = name.name if name.id is None else str(name.id)
 
         if emote in thread_reactions:
-            await thread_reactions.pop(emote)
+            thread_reactions.pop(emote)
             embed = discord.Embed(
                 title="Reaction role removed",
                 color=self.bot.main_color,
