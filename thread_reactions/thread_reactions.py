@@ -1,4 +1,7 @@
 import asyncio
+import emoji
+import typing
+from itertools import takewhile, zip_longest
 
 import discord
 from discord.ext import commands
@@ -6,7 +9,16 @@ from discord.utils import get
 
 from core import checks
 from core.models import PermissionLevel
+from core.config import *
 from core.utils import *
+
+class EmojiCO(commands.PartialEmojiConverter):
+    async def convert(self, ctx, argument):
+        if argument in emoji.UNICODE_EMOJI:
+            return discord.PartialEmoji(name=argument, animated=False)
+        raise commands.BadArgument("Unknown emoji")
+
+EmojiOBJ = typing.Union[discord.PartialEmoji, discord.Emoji, EmojiCO]
 
 class ThreadReactions(commands.Cog):
     def __init__(self, bot):
@@ -36,21 +48,74 @@ class ThreadReactions(commands.Cog):
             embed.set_footer(text=f"Check'{self.bot.prefix}help tr add' to add a reaction role.")
             return await ctx.send(embed=embed)
 
-        embed=discord.Embed(
-            color=self.bot.main_color,
-            description="Thread reactions not empty"
+        global tr_embeds
+        tr_embeds = discord.Embed(
+            title="Thread Reactions",
+            color=self.bot.main_color
         )
-        embed.set_footer(text="Work in process. Will implement listing soon.")
-        return await ctx.send(embed=embed)
+
+        for key in thread_reactions:
+            Emote = discord.utils.get(self.bot.emojis, id=key) if key.isdigit() is True else emoji.emojize(key)
+            Role = self.bot.guild.get_role(int(thread_reactions[key]))
+            EmoteName = str(Emote)
+            RoleName = str(Role)
+            tr_embeds.add_field(name=EmoteName, value=RoleName)
+            continue
+
+        return await ctx.send(embed=tr_embeds)
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_add(self, ctx):
+    async def tr_add(self, ctx, name:EmojiOBJ, *, value:discord.Role):
         """
-        help
+        Add a reaction role.
+
+        To add a reaction, do:
+        - '{prefix}tr add emoji role'
         """
 
-        return await ctx.send(content="This is a test.")
+        emote = name.name if name.id is None else str(name.id)
+        role = str(value.id)
+
+        for key in thread_reactions:
+            if thread_reactions[key] == role:
+                thread_reactions.pop(key)
+                break
+
+        thread_reactions[emote] = role
+        embed=discord.Embed(
+            title="Reaction role added",
+            color=self.bot.main_color,
+            description=f"{str(name)} is successfully assigned to {str(value)}."
+        )
+        return await ctx.send(embed=embed)
+
+    @tr.command(name="remove", aliases=["del", "delete"])
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
+    async def tr_remove(self, ctx, *, name:EmojiOBJ):
+        """
+        Removes a reaction role.
+
+        To remove a reaction, do:
+        - '{prefix}tr remove emoji'
+        """
+
+        emote = name.name if name.id is None else str(name.id)
+
+        if emote in thread_reactions:
+            thread_reactions.pop(emote)
+            embed = discord.Embed(
+                title="Reaction role removed",
+                color=self.bot.main_color,
+                description=f"{str(name)} has been successfully unassigned."
+            )
+            return await ctx.send(embed=embed)
+
+        embed = discord.Embed(
+            color=self.bot.error_color,
+            description=f"{str(name)} is already not assigned to a reaction role."
+        )
+        return await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
