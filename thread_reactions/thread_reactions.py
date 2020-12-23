@@ -87,7 +87,7 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="remove", aliases=["del", "delete"])
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_remove(self, ctx, *, name=EmojiCO)
+    async def tr_remove(self, ctx, *, name=EmojiCO):
         """
         Removes a reaction role.
 
