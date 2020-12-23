@@ -12,7 +12,7 @@ from core.utils import *
 
 class RoleCO(commands.RoleConverter):
     async def convert(self, ctx, argument):
-        return discord,Role()
+        return discord.Role()
     raise commands.BadArgument("Unknown role")
 
 class EmojiCO(commands.PartialEmojiConverter):
