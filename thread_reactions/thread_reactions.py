@@ -11,6 +11,7 @@ from core import checks
 from core.models import PermissionLevel
 from core.config import *
 from core.utils import *
+from core.thread import Thread
 
 class EmojiCO(commands.PartialEmojiConverter):
     async def convert(self, ctx, argument):
@@ -55,7 +56,7 @@ class ThreadReactions(commands.Cog):
         )
 
         for key in thread_reactions:
-            Emote = discord.utils.get(ctx.guild.emojis, id=key) if key.isdigit() is True else emoji.emojize(key)
+            Emote = discord.utils.get(ctx.guild.emojis, id=int(key)) if key.isdigit() is True else emoji.emojize(key)
             Role = self.bot.guild.get_role(int(thread_reactions[key]))
             EmoteName = str(Emote)
             RoleName = str(Role)
@@ -133,20 +134,19 @@ class ThreadReactions(commands.Cog):
     @thr.command(name="update")
     @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
-    async def thr_update(self, ctx):
+    async def thr_update(self, ctx, thread):
         """
         Updates reactions on thread genesis message.
         """
 
-        for message in ctx.channel.history(limit=1, oldest_first=True):
-            await message.clear_reactions()
+        await thread.genesis_message.clear_reactions()
             for key in thread_reactions:
                 if key.isdigit() is True:
-                    Emote = discord.utils.get(ctx.guild.emojis, id=key)
-                    await message.add_reaction(Emote)
+                    Emote = discord.utils.get(ctx.guild.emojis, id=int(key))
+                    await thread.genesis_message.add_reaction(Emote)
                     continue
                 else:
-                    await message.add_reaction(key)
+                    await thread.genesis_message.add_reaction(key)
                     continue
         
         embed=discord.Embed(
