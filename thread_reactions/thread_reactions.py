@@ -184,7 +184,7 @@ class ThreadReactions(commands.Cog):
             await recipientOBJ.add_roles(RoleOBJ)
             embed = discord.Embed(
                 color=self.bot.main_color,
-                description=f"Successfully added {str(RoleOBJ)} from {str(recipientOBJ)}."
+                description=f"Successfully added {str(RoleOBJ)} to {str(recipientOBJ)}."
             )
             return await Channel.send(embed=embed)        
 
