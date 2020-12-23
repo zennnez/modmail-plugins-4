@@ -1,7 +1,6 @@
 import asyncio
 import emoji
 import typing
-from itertools import takewhile, zip_longest
 
 import discord
 from discord.ext import commands
@@ -11,6 +10,7 @@ from core import checks
 from core.models import PermissionLevel
 from core.config import *
 from core.utils import *
+from core.thread import Thread
 
 class EmojiCO(commands.PartialEmojiConverter):
     async def convert(self, ctx, argument):
@@ -55,7 +55,7 @@ class ThreadReactions(commands.Cog):
         )
 
         for key in thread_reactions:
-            Emote = discord.utils.get(self.bot.emojis, id=key) if key.isdigit() is True else emoji.emojize(key)
+            Emote = discord.utils.get(ctx.guild.emojis, id=int(key)) if key.isdigit() is True else emoji.emojize(key)
             Role = self.bot.guild.get_role(int(thread_reactions[key]))
             EmoteName = str(Emote)
             RoleName = str(Role)
@@ -116,6 +116,47 @@ class ThreadReactions(commands.Cog):
             description=f"{str(name)} is already not assigned to a reaction role."
         )
         return await ctx.send(embed=embed)
+
+    @commands.group(invoke_without_command=True)
+    @checks.has_permissions(PermissionLevel.SUPPORTER)
+    @checks.thread_only()
+    async def thr(self, ctx):
+        """
+        Edits reactions on thread genesis message.
+
+        To update reactions, do: '''
+        {prefix}trt update
+        '''
+        """
+        return await ctx.send_help(ctx.command)
+
+    @thr.command(name="update")
+    @checks.has_permissions(PermissionLevel.SUPPORTER)
+    @checks.thread_only()
+    async def thr_update(self, ctx):
+        """
+        Updates reactions on thread genesis message.
+        """
+
+        msg = await ctx.channel.history(limit=1, oldest_first=True).flatten()
+        msg = msg[0]
+
+        await msg.clear_reactions()
+        for key in thread_reactions:
+            if key.isdigit() is True:
+                Emote = discord.utils.get(ctx.guild.emojis, id=int(key))
+                await msg.add_reaction(Emote)
+                continue
+            else:
+                await msg.add_reaction(key)
+                continue
+        
+        embed=discord.Embed(
+            color=self.bot.main_color,
+            description="Reactions updated."
+        )
+        return await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
