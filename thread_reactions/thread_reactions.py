@@ -181,7 +181,7 @@ class ThreadReactions(commands.Cog):
 
         if Emote in thread_reactions:
             recipientList = [int(word) for word in ChannelT.split() if word.isdigit()]
-            recipientID = recipientID[0]
+            recipientID = recipientList[0]
             recipientOBJ = Guild.get_member(recipientID)
             RoleID = int(thread_reactions[Emote])
             RoleOBJ = Guild.get_role(RoleID)
@@ -207,8 +207,8 @@ class ThreadReactions(commands.Cog):
             return
 
         if Emote in thread_reactions:
-            recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
-            recipientID = recipientID[0]
+            recipientList = [int(word) for word in ChannelT.split() if word.isdigit()]
+            recipientID = recipientList[0]
             recipientOBJ = Guild.get_member(recipientID)
             RoleID = int(thread_reactions[Emote])
             RoleOBJ = Guild.get_role(RoleID)
