@@ -166,5 +166,49 @@ class ThreadReactions(commands.Cog):
                 continue
         return
 
+    @commands.Cog.listener()
+    @checks.thread_only()
+    async def on_raw_reaction_add(self, payload):
+
+        Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
+        Guild = self.bot.get_guild(payload.guild_id)
+        Channel = Guild.get_channel(payload.channel_id)
+        ChannelT = Channel.topic
+        recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
+        recipientID = recipientID[0]
+        recipientOBJ = Guild.get_member(recipientID)
+
+        if Emote in thread_reactions:
+            RoleID = int(thread_reactions[Emote])
+            RoleOBJ = Guild.get_role(RoleID)
+            await recipientOBJ.add_roles(RoleOBJ)
+            embed = discord.Embed(
+                color=self.bot.main_color,
+                description=f"Successfully added {str(RoleOBJ)} from {str(recipientOBJ)}."
+            )
+            return await Channel.send(embed=embed)        
+
+    @commands.Cog.listener()
+    @checks.thread_only()
+    async def on_raw_reaction_remove(self, payload):
+
+        Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
+        Guild = self.bot.get_guild(payload.guild_id)
+        Channel = Guild.get_channel(payload.channel_id)
+        ChannelT = Channel.topic
+        recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
+        recipientID = recipientID[0]
+        recipientOBJ = Guild.get_member(recipientID)
+
+        if Emote in thread_reactions:
+            RoleID = int(thread_reactions[Emote])
+            RoleOBJ = Guild.get_role(RoleID)
+            await recipientOBJ.remove_roles(RoleOBJ)
+            embed = discord.Embed(
+                color=self.bot.main_color,
+                description=f"Successfully removed {str(RoleOBJ)} from {str(recipientOBJ)}."
+            )
+            return await Channel.send(embed=embed)        
+
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
