@@ -2,16 +2,6 @@
 
 To do:
 
--tr: Non-empty database
-
--tr add: Unicode emoji
-
--tr add: Custom emoji
-
--tr remove: Emoji
-
--tr remove: Role
-
 -thr update
 
 -thr add: All
