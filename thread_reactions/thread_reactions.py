@@ -1,6 +1,7 @@
 import asyncio
 import emoji
 import typing
+from itertools import takewhile, zip_longest
 
 import discord
 from discord.ext import commands
@@ -47,12 +48,21 @@ class ThreadReactions(commands.Cog):
             embed.set_footer(text=f"Check'{self.bot.prefix}help tr add' to add a reaction role.")
             return await ctx.send(embed=embed)
 
-        embed=discord.Embed(
-            color=self.bot.main_color,
-            description="Thread reactions not empty"
-        )
-        embed.set_footer(text="Work in process. Will implement listing soon.")
-        return await ctx.send(embed=embed)
+        embeds = []
+
+        def tr_format_description(names, values):
+            return "\n".join(
+                ": ".join(a, b)
+                for emote, role in enumerate(takewhile(names, values))
+            )
+
+        for names, values in enumerate(zip_longest(*(iter(sorted(thread_reactions))) * 15)):
+            description = tr_format_description(names, values)
+            embed = discord.Embed(title="Thread Reaactions", color=self.bot.main_color, description=description)
+            embeds.append(embed)
+
+        session = EmbedPaginatorSession(ctx, *embeds)
+        await session.run()
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
@@ -97,7 +107,7 @@ class ThreadReactions(commands.Cog):
             embed = discord.Embed(
                 title="Reaction role removed",
                 color=self.bot.main_color,
-                description=f"{str(name)}has been successfully unassigned."
+                description=f"{str(name)} has been successfully unassigned."
             )
             return await ctx.send(embed=embed)
 
