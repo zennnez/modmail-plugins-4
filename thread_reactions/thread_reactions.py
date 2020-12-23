@@ -138,6 +138,8 @@ class ThreadReactions(commands.Cog):
         Updates reactions on thread genesis message.
         """
 
+        thread = ctx.thread
+
         await thread.genesis_message.clear_reactions()
         for key in thread_reactions:
             if key.isdigit() is True:
