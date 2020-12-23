@@ -12,8 +12,8 @@ class ThreadReactions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    thread_reactions = dict()
     global thread_reactions
+    thread_reactions = dict()
 
     @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.SUPPORTER)
