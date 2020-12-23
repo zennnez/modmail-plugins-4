@@ -41,7 +41,7 @@ class ThreadReactions(commands.Cog):
             description="Thread reactions not empty"
         )
         embed.set_footer(text="Work in process. Will implement listing soon.")
-        return await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
