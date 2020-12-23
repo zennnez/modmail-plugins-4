@@ -17,7 +17,7 @@ class RoleCO(commands.RoleConverter):
 
 class EmojiCO(commands.PartialEmojiConverter):
     async def convert(self, ctx, argument):
-        if argument.in emoji.UNICODE_EMOJI:
+        if argument in emoji.UNICODE_EMOJI:
             return discord.PartialEmoji(name=argument, animated=False)
         else:
             return discord.PartialEmoji()
