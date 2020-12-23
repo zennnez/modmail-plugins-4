@@ -1,4 +1,5 @@
 import asyncio
+import emoji
 
 import discord
 from discord.ext import commands
@@ -6,7 +7,22 @@ from discord.utils import get
 
 from core import checks
 from core.models import PermissionLevel
+from core.config import *
 from core.utils import *
+
+class RoleCO(commands.RoleConverter):
+    async def convert(self, ctx, argument):
+        return discord,Role()
+    raise commands.RoleNotFound("Unknown role")
+
+class EmojiCO(commands.PartialEmojiConverter):
+    async def convert(self, ctx, argument):
+        if argument.in emoji.UNICODE_EMOJI:
+            return discord.PartialEmoji(name=argument, animated=False)
+        else:
+            return discord.PartialEmoji()
+        raise commands.PartialEmojiConversionFailure("Unknown emoji")
+
 
 class ThreadReactions(commands.Cog):
     def __init__(self, bot):
@@ -45,12 +61,56 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_add(self, ctx):
+    async def tr_add(self, ctx, name=EmojiCO, *, value=RoleCO):
         """
-        help
+        Add a reaction role.
+
+        To add a reaction, do:
+        - '{prefix}tr add emoji role'
         """
 
-        return await ctx.send(content="This is a test.")
+        emote = name.name if name.id is None else str(name.id)
+        role = str(value.id)
+
+        for key in thread_reactions:
+            if thread_reactions[key] == role:
+                await thread_reactions.pop(key)
+                break
+
+        thread_reactions[emote] = role
+        embed=discord.Embed(
+            title="Reaction role added",
+            color=self.bot.main_color,
+            description=f"{str(name)} is successfully assigned to {str(value)}."
+        )
+        return await ctx.send(embed=embed)
+
+    @tr.command(name="remove", aliases=["del", "delete"])
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
+    async def tr_remove(self, ctx, *, name=EmojiCO)
+        """
+        Removes a reaction role.
+
+        To remove a reaction, do:
+        - '{prefix}tr remove emoji'
+        """
+
+        emote = name.name if name.id is None else str(name.id)
+
+        if emote in thread_reactions:
+            await thread_reactions.pop(emote)
+            embed = discord.Embed(
+                title="Reaction role removed",
+                color=self.bot.main_color,
+                description=f"{str(name)}has been successfully unassigned."
+            )
+            return await ctx.send(embed=embed)
+
+        embed = discord.Embed(
+            color=self.bot.error_color,
+            description=f"{str(name)} is already not assigned to a reaction role."
+        )
+        return await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
