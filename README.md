@@ -1,3 +1,4 @@
 # modmail-plugins
 
-(Work In Progress wil fix things later)
+Assign roles using reaction roles in thread.
+Report if any bugs present.
