@@ -48,12 +48,7 @@ class ThreadReactions(commands.Cog):
             embed.set_footer(text=f"Check'{self.bot.prefix}help tr add' to add a reaction role.")
             return await ctx.send(embed=embed)
 
-        embed = discord.Embed(
-            title="Thread reactions", 
-            color=self.bot.main_color, 
-            description="")
-        embeds = discord.Embed.from_dict(thread_reactions)
-        embed.append(embeds)
+        embed = discord.Embed.from_dict(thread_reactions)
         return await ctx.send(embed=embed)
 
     @tr.command(name="add")
