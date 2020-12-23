@@ -166,7 +166,7 @@ class ThreadReactions(commands.Cog):
                 continue
         return
 
-    @commands.Cog.listener
+    @commands.Cog.listener()
     @checks.thread_only()
     async def on_raw_reaction_add(self, payload):
         if payload.guild_id is not int(self.bot.guild_id):
@@ -188,7 +188,7 @@ class ThreadReactions(commands.Cog):
             )
             return await Channel.send(embed=embed)
 
-    @commands.Cog.listener
+    @commands.Cog.listener()
     @checks.thread_only()
     async def on_raw_reaction_remove(self, payload):
         if payload.guild_id is not int(self.bot.guild_id):
