@@ -1,18 +1,18 @@
 # modmail-plugins
 
 To do:
--tr: Non-empty database
--tr add: Unicode emoji
--tr add: Custom emoji
--tr remove: Emoji
--tr remove: Role
--thr update
--thr add: All
--thr add: Emoji
--thr add: Role
--thr remove: All
--thr remove: Emoji
--thr remove: Role
--Cog: Om new thread, assign reactions
--Cog: On react, assign role
--Cog: On unreact, unassign role
+/n -tr: Non-empty database
+/n -tr add: Unicode emoji
+/n -tr add: Custom emoji
+/n -tr remove: Emoji
+/n -tr remove: Role
+/n -thr update
+/n -thr add: All
+/n -thr add: Emoji
+/n -thr add: Role
+/n -thr remove: All
+/n -thr remove: Emoji
+/n -thr remove: Role
+/n -Cog: Om new thread, assign reactions
+/n -Cog: On react, assign role
+/n -Cog: On unreact, unassign role
