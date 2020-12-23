@@ -138,16 +138,17 @@ class ThreadReactions(commands.Cog):
         Updates reactions on thread genesis message.
         """
 
-        thread = ctx.thread
+        msg = await ctx.channel.history(limit=1, oldest_first=True).flatten()
+        msg = msg[0]
 
-        await thread.genesis_message.clear_reactions()
+        await msg.clear_reactions()
         for key in thread_reactions:
             if key.isdigit() is True:
                 Emote = discord.utils.get(ctx.guild.emojis, id=int(key))
-                await thread.genesis_message.add_reaction(Emote)
+                await msg.add_reaction(Emote)
                 continue
             else:
-                await thread.genesis_message.add_reaction(key)
+                await msg.add_reaction(key)
                 continue
         
         embed=discord.Embed(
