@@ -55,7 +55,7 @@ class ThreadReactions(commands.Cog):
         )
 
         for key in thread_reactions:
-            Emote = discord.utils.get(self.guild.emojis, id=key) if key.isdigit() is True else emoji.emojize(key)
+            Emote = discord.utils.get(ctx.guild.emojis, id=key) if key.isdigit() is True else emoji.emojize(key)
             Role = self.bot.guild.get_role(int(thread_reactions[key]))
             EmoteName = str(Emote)
             RoleName = str(Role)
@@ -142,7 +142,7 @@ class ThreadReactions(commands.Cog):
             await message.clear_reactions()
             for key in thread_reactions:
                 if key.isdigit() is True:
-                    Emote = discord.utils.get(self.guild.emojis, id=key)
+                    Emote = discord.utils.get(ctx.guild.emojis, id=key)
                     await message.add_reaction(Emote)
                     continue
                 else:
