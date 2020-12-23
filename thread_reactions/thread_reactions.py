@@ -174,13 +174,18 @@ class ThreadReactions(commands.Cog):
         Guild = self.bot.get_guild(payload.guild_id)
         Channel = Guild.get_channel(payload.channel_id)
         ChannelT = Channel.topic
-        recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
-        recipientID = recipientID[0]
-        recipientOBJ = Guild.get_member(recipientID)
+        User = Guild.get_member(payload.user_id)
+
+        if User.bot is True:
+            return
 
         if Emote in thread_reactions:
+            recipientList = [int(word) for word in ChannelT.split() if word.isdigit()]
+            recipientID = recipientID[0]
+            recipientOBJ = Guild.get_member(recipientID)
             RoleID = int(thread_reactions[Emote])
             RoleOBJ = Guild.get_role(RoleID)
+
             await recipientOBJ.add_roles(RoleOBJ)
             embed = discord.Embed(
                 color=self.bot.main_color,
@@ -196,11 +201,15 @@ class ThreadReactions(commands.Cog):
         Guild = self.bot.get_guild(payload.guild_id)
         Channel = Guild.get_channel(payload.channel_id)
         ChannelT = Channel.topic
-        recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
-        recipientID = recipientID[0]
-        recipientOBJ = Guild.get_member(recipientID)
+        User = Guild.get_member(payload.user_id)
+
+        if User.bot is True:
+            return
 
         if Emote in thread_reactions:
+            recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
+            recipientID = recipientID[0]
+            recipientOBJ = Guild.get_member(recipientID)
             RoleID = int(thread_reactions[Emote])
             RoleOBJ = Guild.get_role(RoleID)
             await recipientOBJ.remove_roles(RoleOBJ)
