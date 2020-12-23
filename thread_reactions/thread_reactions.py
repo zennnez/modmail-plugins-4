@@ -48,21 +48,13 @@ class ThreadReactions(commands.Cog):
             embed.set_footer(text=f"Check'{self.bot.prefix}help tr add' to add a reaction role.")
             return await ctx.send(embed=embed)
 
-        embeds = []
-
-        def tr_format_description(names, values):
-            return "\n".join(
-                ": ".join(a, b)
-                for emote, role in enumerate(takewhile(names, values))
-            )
-
-        for names, values in enumerate(zip_longest(*(iter(sorted(thread_reactions))) * 15)):
-            description = tr_format_description(names, values)
-            embed = discord.Embed(title="Thread Reaactions", color=self.bot.main_color, description=description)
-            embeds.append(embed)
-
-        session = EmbedPaginatorSession(ctx, *embeds)
-        await session.run()
+        embed = discord.Embed(
+            title="Thread reactions", 
+            color=self.bot.main_color, 
+            description="")
+        embeds = discord.Embed.from_dict(thread_reactions)
+        embed.append(embeds)
+        return await ctx.send(embed=embed)
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
