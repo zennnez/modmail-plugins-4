@@ -1,5 +1,6 @@
 import asyncio
 import emoji
+import typing
 
 import discord
 from discord.ext import commands
@@ -10,19 +11,13 @@ from core.models import PermissionLevel
 from core.config import *
 from core.utils import *
 
-class RoleCO(commands.RoleConverter):
-    async def convert(self, ctx, argument):
-        return discord.Role()
-    raise commands.BadArgument("Unknown role")
-
 class EmojiCO(commands.PartialEmojiConverter):
     async def convert(self, ctx, argument):
         if argument in emoji.UNICODE_EMOJI:
             return discord.PartialEmoji(name=argument, animated=False)
-        else:
-            return discord.PartialEmoji()
         raise commands.BadArgument("Unknown emoji")
 
+EmojiOBJ = typing.Union[discord.PartialEmoji, discord.Emoji, EmojiCO]
 
 class ThreadReactions(commands.Cog):
     def __init__(self, bot):
@@ -61,7 +56,7 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_add(self, ctx, name=EmojiCO, *, value=RoleCO):
+    async def tr_add(self, ctx, name=EmojiOBJ, *, value=discord.Role):
         """
         Add a reaction role.
 
@@ -87,7 +82,7 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="remove", aliases=["del", "delete"])
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_remove(self, ctx, *, name=EmojiCO):
+    async def tr_remove(self, ctx, *, name=EmojiOBJ):
         """
         Removes a reaction role.
 
