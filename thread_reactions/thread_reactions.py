@@ -48,8 +48,21 @@ class ThreadReactions(commands.Cog):
             embed.set_footer(text=f"Check'{self.bot.prefix}help tr add' to add a reaction role.")
             return await ctx.send(embed=embed)
 
-        embed = discord.Embed.from_dict(thread_reactions)
-        return await ctx.send(embed=embed)
+        global tr_embeds
+        tr_embeds = discord.Embed(
+            title="Thread Reactions",
+            color=self.bot.main_color
+        )
+
+        for key in thread_reactions:
+            Emote = discord.utils.get(bot.get_all_emoji(), key)
+            Role = self.bot.guild.get_role(int(thread_reactions[key]))
+            EmoteName = str(Emote)
+            RoleName = str(Role)
+            tr_embeds.add_field(name=EmoteName, value=RoleName)
+            continue
+
+        return await ctx.send(embed=tr_embeds)
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
