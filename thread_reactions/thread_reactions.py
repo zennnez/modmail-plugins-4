@@ -152,12 +152,10 @@ class ThreadReactions(commands.Cog):
         )
         return await ctx.send(embed=embed)
 
-    @commands.Cog.listener
+    @commands.Cog.listener()
     @checks.thread_only()
     async def on_thread_ready(self, thread):
-        msg = await ctx.channel.history(limit=1, oldest_first=True).flatten()
-        msg = msg[0]
-
+        msg = thread.genesis_message
         for key in thread_reactions:
             if key.isdigit() is True:
                 Emote = discord.utils.get(self.bot.emojis, id=int(key))
@@ -166,7 +164,7 @@ class ThreadReactions(commands.Cog):
             else:
                 await msg.add_reaction(key)
                 continue
-        return await ctx.send("Reactions added")
+        return
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
