@@ -170,7 +170,7 @@ class ThreadReactions(commands.Cog):
     @checks.thread_only()
     async def on_raw_reaction_add(self, payload):
 
-        Emote = payload.emoji.name if payload.emoji.id is none else str(payload.emoji.id)
+        Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
         Guild = discord.utils.get(self.bot.guilds, id=payload.guild_id)
         Channel = discord.utils.get(Guild.channels, id=payload.channel_id)
         recipientID = [int(word) for word in Channel.topic.split() if word.isdigit()]
@@ -190,7 +190,7 @@ class ThreadReactions(commands.Cog):
     @checks.thread_only()
     async def on_raw_reaction_remove(self, payload):
 
-        Emote = payload.emoji.name if payload.emoji.id is none else str(payload.emoji.id)
+        Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
         Guild = discord.utils.get(self.bot.guilds, id=payload.guild_id)
         Channel = discord.utils.get(Guild.channels, id=payload.channel_id)
         recipientID = [int(word) for word in Channel.topic.split() if word.isdigit()]
