@@ -13,7 +13,7 @@ from core.utils import *
 class RoleCO(commands.RoleConverter):
     async def convert(self, ctx, argument):
         return discord,Role()
-    raise commands.RoleNotFound("Unknown role")
+    raise commands.BadArgument("Unknown role")
 
 class EmojiCO(commands.PartialEmojiConverter):
     async def convert(self, ctx, argument):
@@ -21,7 +21,7 @@ class EmojiCO(commands.PartialEmojiConverter):
             return discord.PartialEmoji(name=argument, animated=False)
         else:
             return discord.PartialEmoji()
-        raise commands.PartialEmojiConversionFailure("Unknown emoji")
+        raise commands.BadArgument("Unknown emoji")
 
 
 class ThreadReactions(commands.Cog):
