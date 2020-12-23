@@ -140,14 +140,14 @@ class ThreadReactions(commands.Cog):
         """
 
         await thread.genesis_message.clear_reactions()
-            for key in thread_reactions:
-                if key.isdigit() is True:
-                    Emote = discord.utils.get(ctx.guild.emojis, id=int(key))
-                    await thread.genesis_message.add_reaction(Emote)
-                    continue
-                else:
-                    await thread.genesis_message.add_reaction(key)
-                    continue
+        for key in thread_reactions:
+            if key.isdigit() is True:
+                Emote = discord.utils.get(ctx.guild.emojis, id=int(key))
+                await thread.genesis_message.add_reaction(Emote)
+                continue
+            else:
+                await thread.genesis_message.add_reaction(key)
+                continue
         
         embed=discord.Embed(
             color=self.bot.main_color,
