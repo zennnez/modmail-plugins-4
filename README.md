@@ -1,7 +1,6 @@
 # modmail-plugins
 
 To do:
--tr: Empty database
 -tr: Non-empty database
 -tr add: Unicode emoji
 -tr add: Custom emoji
