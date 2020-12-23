@@ -171,38 +171,42 @@ class ThreadReactions(commands.Cog):
     async def on_raw_reaction_add(self, payload):
 
         Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
-        Guild = discord.utils.get(self.bot.guilds, id=payload.guild_id)
-        Channel = discord.utils.get(Guild.channels, id=payload.channel_id)
-        recipientID = [int(word) for word in Channel.topic.split() if word.isdigit()]
+        Guild = self.bot.get_guild(payload.guild_id)
+        Channel = Guild.get_channel(payload.channel_id)
+        ChannelT = Channel.topic
+        recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
         recipientID = recipientID[0]
-        recipientOBJ = discord.utils.get(Guild.members, id=recipientID)
+        recipientOBJ = Guild.get_member(recipientID[0])
 
         if Emote in thread_reactions:
-            roleOBJ = discord.utils.get(Guild,roles, id=int(thread_reactions[Emote]))
+            RoleID = int(thread_reactions[Emote])
+            RoleOBJ = Guild.get_role(RoleID)
             await recipientOBJ.add_roles(roleOBJ)
             embed = discord.Embed(
                 color=self.bot.main_color,
-                description=f"Successfully granted {str(roleOBJ)} to {str(recipientOBJ)}."
+                description=f"Successfully added {str(RoleOBJ)} from {str(recipientOBJ)}."
             )
-            return await Channel.send(embed=embed)
+            return await Channel.send(embed=embed)        
 
     @commands.Cog.listener()
     @checks.thread_only()
     async def on_raw_reaction_remove(self, payload):
 
         Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
-        Guild = discord.utils.get(self.bot.guilds, id=payload.guild_id)
-        Channel = discord.utils.get(Guild.channels, id=payload.channel_id)
-        recipientID = [int(word) for word in Channel.topic.split() if word.isdigit()]
+        Guild = self.bot.get_guild(payload.guild_id)
+        Channel = Guild.get_channel(payload.channel_id)
+        ChannelT = Channel.topic
+        recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
         recipientID = recipientID[0]
-        recipientOBJ = discord.utils.get(Guild.members, id=recipientID)
+        recipientOBJ = Guild.get_member(recipientID[0])
 
         if Emote in thread_reactions:
-            roleOBJ = discord.utils.get(Guild,roles, id=int(thread_reactions[Emote]))
+            RoleID = int(thread_reactions[Emote])
+            RoleOBJ = Guild.get_role(RoleID)
             await recipientOBJ.remove_roles(roleOBJ)
             embed = discord.Embed(
                 color=self.bot.main_color,
-                description=f"Successfully removed {str(roleOBJ)} from {str(recipientOBJ)}."
+                description=f"Successfully removed {str(RoleOBJ)} from {str(recipientOBJ)}."
             )
             return await Channel.send(embed=embed)        
 
