@@ -30,18 +30,27 @@ class ThreadReactions(commands.Cog):
 
         if not thread_reactions:
             embed=discord.Embed(
-                colour=self.bot.error_color,
+                color=self.bot.error_color,
                 description="You dont have any thread reaction roles at the moment"
             )
             embed.set_footer(text=f"Check'{self.bot.prefix}help tr add' to add a reaction role.")
             return await ctx.send(embed=embed)
 
         embed=discord.Embed(
-            colour=self.bot.main_color,
+            color=self.bot.main_color,
             description="Thread reactions not empty"
         )
         embed.set_footer(text="Work in process. Will implement listing soon.")
-        await ctx.send(embed=embed)
+        return await ctx.send(embed=embed)
+
+    @tr.command(name="add")
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
+    async def tr(self, ctx):
+        """
+        help
+        """
+
+        return await ctx.send(content="This is a test.")
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
