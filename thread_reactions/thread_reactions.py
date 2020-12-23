@@ -181,7 +181,7 @@ class ThreadReactions(commands.Cog):
         if Emote in thread_reactions:
             RoleID = int(thread_reactions[Emote])
             RoleOBJ = Guild.get_role(RoleID)
-            await recipientOBJ.add_roles(roleOBJ)
+            await recipientOBJ.add_roles(RoleOBJ)
             embed = discord.Embed(
                 color=self.bot.main_color,
                 description=f"Successfully added {str(RoleOBJ)} from {str(recipientOBJ)}."
@@ -203,7 +203,7 @@ class ThreadReactions(commands.Cog):
         if Emote in thread_reactions:
             RoleID = int(thread_reactions[Emote])
             RoleOBJ = Guild.get_role(RoleID)
-            await recipientOBJ.remove_roles(roleOBJ)
+            await recipientOBJ.remove_roles(RoleOBJ)
             embed = discord.Embed(
                 color=self.bot.main_color,
                 description=f"Successfully removed {str(RoleOBJ)} from {str(recipientOBJ)}."
