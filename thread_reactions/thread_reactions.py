@@ -36,8 +36,7 @@ class ThreadReactions(commands.Cog):
         When '{prefix}tr' is used by itself, this will retrieve
         a list of reaction roles currently assigned.
 
-        To add reactions to thread:
-        - '{prefix}thr add'
+        To add reactions to thread, do: '{prefix}thr add'
         """
 
         if not thread_reactions:
@@ -70,8 +69,7 @@ class ThreadReactions(commands.Cog):
         """
         Add a reaction role.
 
-        To add a reaction, do:
-        - '{prefix}tr add emoji role'
+        To add a reaction, do: '{prefix}tr add emoji role'
         """
 
         emote = name.name if name.id is None else str(name.id)
@@ -96,8 +94,7 @@ class ThreadReactions(commands.Cog):
         """
         Removes a reaction role.
 
-        To remove a reaction, do:
-        - '{prefix}tr remove emoji'
+        To remove a reaction, do: '{prefix}tr remove emoji'
         """
 
         emote = name.name if name.id is None else str(name.id)
@@ -124,14 +121,12 @@ class ThreadReactions(commands.Cog):
         """
         Edits reactions on thread genesis message.
 
-        To update reactions, do: '''
-        {prefix}trt update
-        '''
+        To update reactions, do: '{prefix}trt update'
         """
         return await ctx.send_help(ctx.command)
 
     @thr.command(name="update")
-    @checks.has_permissions(PermissionLevel.SUPPORTER)
+    @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     @checks.thread_only()
     async def thr_update(self, ctx):
         """
@@ -157,6 +152,19 @@ class ThreadReactions(commands.Cog):
         )
         return await ctx.send(embed=embed)
 
+    @commands.Cog.listener()
+    @checks.thread_only()
+    async def on_thread_ready(self, thread):
+        msg = thread.genesis_message
+        for key in thread_reactions:
+            if key.isdigit() is True:
+                Emote = discord.utils.get(self.bot.emojis, id=int(key))
+                await msg.add_reaction(Emote)
+                continue
+            else:
+                await msg.add_reaction(key)
+                continue
+        return
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
