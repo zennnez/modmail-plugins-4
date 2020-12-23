@@ -56,7 +56,7 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_add(self, ctx, name=EmojiOBJ, *, value=discord.Role):
+    async def tr_add(self, ctx, name:EmojiOBJ, *, value:discord.Role):
         """
         Add a reaction role.
 
@@ -82,7 +82,7 @@ class ThreadReactions(commands.Cog):
 
     @tr.command(name="remove", aliases=["del", "delete"])
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_remove(self, ctx, *, name=EmojiOBJ):
+    async def tr_remove(self, ctx, *, name:EmojiOBJ):
         """
         Removes a reaction role.
 
