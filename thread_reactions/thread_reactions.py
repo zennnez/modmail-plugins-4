@@ -174,8 +174,9 @@ class ThreadReactions(commands.Cog):
         Guild = self.bot.get_guild(payload.guild_id)
         Channel = Guild.get_channel(payload.channel_id)
         ChannelT = Channel.topic
-      
-        if payload.user_id == self.bot.id:
+        User = Guild.get_member(payload.user_id)
+
+        if User.bot is True:
             return
 
         if Emote in thread_reactions:
@@ -200,10 +201,11 @@ class ThreadReactions(commands.Cog):
         Guild = self.bot.get_guild(payload.guild_id)
         Channel = Guild.get_channel(payload.channel_id)
         ChannelT = Channel.topic
+        User = Guild.get_member(payload.user_id)
 
-        if payload.user_id == self.bot.id:
+        if User.bot is True:
             return
-            
+
         if Emote in thread_reactions:
             recipientID = [int(word) for word in ChannelT.split() if word.isdigit()]
             recipientID = recipientID[0]
