@@ -170,6 +170,9 @@ class ThreadReactions(commands.Cog):
     @checks.thread_only()
     async def on_raw_reaction_add(self, payload):
 
+        if not payload.guild_id:
+            return
+            
         Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
         Guild = self.bot.get_guild(payload.guild_id)
         Channel = Guild.get_channel(payload.channel_id)
@@ -196,6 +199,9 @@ class ThreadReactions(commands.Cog):
     @commands.Cog.listener()
     @checks.thread_only()
     async def on_raw_reaction_remove(self, payload):
+
+        if not payload.guild_id:
+            return
 
         Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
         Guild = self.bot.get_guild(payload.guild_id)
