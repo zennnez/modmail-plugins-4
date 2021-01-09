@@ -41,7 +41,7 @@ class ImageSpoilers(commands.Cog):
         if message.author.bot:
             return
 
-        s_thread_recipient = self.thread.recipient
+        s_thread_recipient = thread.recipient
 
         #check if attachment is spoilered
         for attachment in message.attachments:
