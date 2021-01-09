@@ -44,7 +44,7 @@ class ImageSpoilers(commands.Cog):
 
         #check if attachment is spoilered
         for attachment in message.attachments:
-            if attachment.is_spoiler()
+            if attachment.is_spoiler():
                 return await sptr(message=message, anonymous-anonymous)
         
         #check if links are spoilered
