@@ -63,7 +63,7 @@ class ImageSpoilers(commands.Cog):
                         return await channel.send(content=f"(Response) Recipient: {message.content}", files=message.attachments)
 
             #if channel is thread channel
-             else:
+            else:
                 s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                 if anonymous is True:
                     return await s_dm_channel.send(content=f"(Response) {message.author.top_role}: {message.content}", files=message.attachments)
