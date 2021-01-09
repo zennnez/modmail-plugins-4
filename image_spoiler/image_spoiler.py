@@ -13,22 +13,21 @@ class ImageSpoilers(commands.Cog):
 
     @commands.Cog.listener()
     @checks.thread_only()
-    async def on_message(self, ctx):
-        msg = ctx.message
+    async def on_message(self, message):
         global lic
         lic = 0
-        if not ctx.author.bot:
-            for attachment in msg.attachments:
+        if not message.author.bot:
+            for attachment in message.attachments:
                 if attachment.filename.startswith("SPOILER_"):
                     lic += 1
-            links = re.findall(r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)", msg.content)
+            links = re.findall(r"[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)", message.content)
             for key in links:
                 spoiler = re.search("SPOILER_",str(key))
                 if spoiler is not None:
                     lic += 1
         
         if lic > 0:
-            return await ctx.thread.reply(msg, plain=True)
+            return await ctx.thread.reply(message, plain=True)
 
                 
 
