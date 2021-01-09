@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 
 from core import checks
-
+from core.thread import Thread
 
 class ImageSpoilers(commands.Cog):
     def __init__(self, bot):
@@ -28,9 +28,7 @@ class ImageSpoilers(commands.Cog):
                     lic += 1
         
         if lic > 0:
-            await with ctx.typing():
-                await ctx.thread.reply(msg, plain=True)
-                return
+            return await ctx.thread.reply(msg, plain=True)
 
                 
 
