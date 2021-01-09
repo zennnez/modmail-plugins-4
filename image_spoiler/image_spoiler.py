@@ -40,7 +40,7 @@ class ImageSpoilers(commands.Cog):
                     for msg in s_msg_list:
                         if msg.author is not self.bot:
                             continue
-                        elif re.search("SPOILER_", msg.embed.image.url):
+                    elif re.search("SPOILER_", msg.embed.description) or re.search("SPOILER_", (msg.embed.fields[0])["Image"]):
                             await msg.delete()
                             dm_msg_list = await thread.find_linked_messages(message1=msg)
                             dm_msg = dm_msg_list[0]
@@ -73,7 +73,7 @@ class ImageSpoilers(commands.Cog):
                 for msg in s_msg_list:
                     if msg.author is not self.bot:
                         continue
-                    elif re.search("SPOILER_", msg.embed.image.url):
+                    elif re.search("SPOILER_", msg.embed.description) or re.search("SPOILER_", (msg.embed.fields[0])["Image"]):
                         dm_msg_list = await thread.find_linked_messages(message1=msg)
                         dm_msg = dm_msg_list[0]
                         await dm_msg.delete()
