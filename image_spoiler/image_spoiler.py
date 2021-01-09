@@ -13,7 +13,7 @@ class ImageSpoilers(commands.Cog):
 
     @commands.Cog.listener()
     @checks.thread_only()
-    async def on_message(self, message):
+    async def on_thread_reply(self, thread, from_mod, message, anonymous, plain):
         global lic
         lic = 0
         if not message.author.bot:
@@ -27,8 +27,7 @@ class ImageSpoilers(commands.Cog):
                     lic += 1
         
         if lic > 0:
-            return await ctx.thread.reply(message, plain=True)
-
+            return await thread.reply(message, plain=True)
                 
 
 def setup(bot):
