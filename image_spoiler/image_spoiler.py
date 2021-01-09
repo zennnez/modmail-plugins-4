@@ -36,9 +36,10 @@ class ImageSpoilers(commands.Cog):
 
                 #if channel is thread channel
                 else:
-                    s_msg_list = await thread.channel.history(limit=5).flatten()
+                    s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
+                    s_msg_list = await s_dm_channel.history(limit=5).flatten()
                     for msg in s_msg_list:
-                        if msg.author.bot and re.search("SPOILER_", msg.embed.image.url):
+                        if msg.author.bot and re.search("SPOILER_", msg.embeds[0].image.url):
                             await msg.delete()
                             break
                     
@@ -61,9 +62,10 @@ class ImageSpoilers(commands.Cog):
 
                 #if channel is thread channel
                 else:
-                    s_msg_list = await thread.channel.history(limit=5).flatten()
+                    s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
+                    s_msg_list = await s_dm_channel.history(limit=5).flatten()
                     for msg in s_msg_list:
-                        if msg.author.bot and re.search("SPOILER_", msg.embed.image.url):
+                        if msg.author.bot and re.search("SPOILER_", msg.embeds[0].image.url):
                             await msg.delete()
                             break
                     
