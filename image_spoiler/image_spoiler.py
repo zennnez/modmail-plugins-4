@@ -28,8 +28,9 @@ class ImageSpoilers(commands.Cog):
                     lic += 1
         
         if lic > 0:
-            return await with ctx.typing():
-                await ctx.thread.reply(msg, plain=True)o
+            await with ctx.typing():
+                await ctx.thread.reply(msg, plain=True)
+                return
 
                 
 
