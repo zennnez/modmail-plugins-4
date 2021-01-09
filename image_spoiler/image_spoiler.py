@@ -18,9 +18,6 @@ class ImageSpoilers(commands.Cog):
         if message.author.bot:
             return
 
-        if thread.recipient.id in self.bot.blocked_users:
-            return await message.add_reaction(self.config.blocked_emoji)
-
         #convert attachments to files
         global s_file_list
         s_file_list = []
@@ -35,15 +32,19 @@ class ImageSpoilers(commands.Cog):
                 if message.guild is None:
                     s_og_reply = await thread.find_linked_message_from_dm(message=message)
                     await s_og_reply.delete()
-                    s_guild = discord.utils.get(self.bot.guilds, guild_id=self.config.modmail_guild_id) if self.config.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.config.guild_id)
+                    s_guild = discord.utils.get(self.bot.guilds, guild_id=self.bot.modmail_guild_id) if self.bot.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.bot.guild_id)
                     for channel in s_guild.channels:
                         if re.search(f"{str(thread.recipient.id)}", channel.topic):
                             return await channel.send(content=f"(Response) Recipient: {message.content}", files=s_file_list)
 
                 #if channel is thread channel
                 else:
-                    s_og_reply = await thread.find_linked_messages(message1=message)
-                    await s_og_reply.delete()
+                    await for msg in message.channel.history(limit=10):
+                        if msg.author is not self.bot:
+                            continue
+                        else if re.search("SPOILER_", msg.embed.image.url):
+                            await msg.delete()
+                            break
                     s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                     if anonymous is True:
                         return await s_dm_channel.send(content=f"(Response) {message.author.top_role}: {message.content}", files=s_file_list)
@@ -63,15 +64,19 @@ class ImageSpoilers(commands.Cog):
             if message.guild is None:
                 s_og_reply = await thread.find_linked_message_from_dm(message=message)
                 await s_og_reply.delete()
-                s_guild = discord.utils.get(self.bot.guilds, guild_id=self.config.modmail_guild_id) if self.config.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.config.guild_id)
+                s_guild = discord.utils.get(self.bot.guilds, guild_id=self.bot.modmail_guild_id) if self.bot.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.bot.guild_id)
                 for channel in s_guild.channels:
                     if re.search(f"{str(thread.recipient.id)}", channel.topic):
                         return await channel.send(content=f"(Response) Recipient: {message.content}", files=s_file_list)
 
             #if channel is thread channel
             else:
-                s_og_reply = await thread.find_linked_messages(message1=message)
-                await s_og_reply.delete()
+                await for msg in message.channel.history(limit=10):
+                    if msg.author is not self.bot:
+                        continue
+                    else if re.search("SPOILER_", msg.embed.image.url):
+                        await msg.delete()
+                        break
                 s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                 if anonymous is True:
                     return await s_dm_channel.send(content=f"(Response) {message.author.top_role}: {message.content}", files=s_file_list)
