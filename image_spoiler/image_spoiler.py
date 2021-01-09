@@ -23,18 +23,18 @@ class ImageSpoilers(commands.Cog):
             if attachment.is_spoiler():
                 #check if user is blocked
                 if thread.recipient.id in self.bot.blocked_users:
-                return await message.add_reaction(self.config.blocked_emoji)
+                    return await message.add_reaction(self.config.blocked_emoji)
 
                 #if channel is DM channel
                 if message.guild is None:
                     await message.add_reaction(self.config.sent_emoji)
-                s_guild = discord.utils.get(self.bot.guilds, guild_id=self.config.modmail_guild_id) if self.config.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.config.guild_id)
-                for channel in s_guild.channels:
-                    if re.search(f"{str(thread.recipient.id)}", channel.topic):
-                        return await channel.send(content=f"(Response) Recipient: {message.content}", files=message.attachments)
+                    s_guild = discord.utils.get(self.bot.guilds, guild_id=self.config.modmail_guild_id) if self.config.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.config.guild_id)
+                    for channel in s_guild.channels:
+                        if re.search(f"{str(thread.recipient.id)}", channel.topic):
+                            return await channel.send(content=f"(Response) Recipient: {message.content}", files=message.attachments)
 
                 #if channel is thread channel
-                 else:
+                else:
                     s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                     if anonymous is True:
                         return await s_dm_channel.send(content=f"(Response) {message.author.top_role}: {message.content}", files=message.attachments)
