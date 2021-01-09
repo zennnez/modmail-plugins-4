@@ -38,7 +38,7 @@ class ImageSpoilers(commands.Cog):
                 else:
                     s_msg_list = await thread.channel.history(limit=5).flatten()
                     for msg in s_msg_list:
-                        if msg.author is self.bot and re.search("SPOILER_", msg.embed.image.url):
+                        if msg.author.bot and re.search("SPOILER_", msg.embed.image.url):
                             await msg.delete()
                             break
                     
@@ -63,7 +63,7 @@ class ImageSpoilers(commands.Cog):
                 else:
                     s_msg_list = await thread.channel.history(limit=5).flatten()
                     for msg in s_msg_list:
-                        if msg.author is self.bot and re.search("SPOILER_", msg.embed.image.url):
+                        if msg.author.bot and re.search("SPOILER_", msg.embed.image.url):
                             await msg.delete()
                             break
                     
