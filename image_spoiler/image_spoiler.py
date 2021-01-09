@@ -33,7 +33,7 @@ class ImageSpoilers(commands.Cog):
             if re.search("SPOILER_", attachment.filename):
                 #if channel is DM channel
                 if message.guild is None:
-                    s_og_reply = thread.find_linked_message_from_dm(message=message)
+                    s_og_reply = await thread.find_linked_message_from_dm(message=message)
                     await s_og_reply.delete()
                     s_guild = discord.utils.get(self.bot.guilds, guild_id=self.config.modmail_guild_id) if self.config.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.config.guild_id)
                     for channel in s_guild.channels:
@@ -42,8 +42,7 @@ class ImageSpoilers(commands.Cog):
 
                 #if channel is thread channel
                 else:
-                    s_og_reply_list = thread.find_linked_messages(message1=message)
-                    s_og_reply = s_og_reply_list[0]
+                    s_og_reply = await thread.find_linked_messages(message1=message)
                     await s_og_reply.delete()
                     s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                     if anonymous is True:
@@ -62,7 +61,7 @@ class ImageSpoilers(commands.Cog):
         if re.search("SPOILER_", message.content):
             #if channel is DM channel
             if message.guild is None:
-                s_og_reply = thread.find_linked_message_from_dm(message=message)
+                s_og_reply = await thread.find_linked_message_from_dm(message=message)
                 await s_og_reply.delete()
                 s_guild = discord.utils.get(self.bot.guilds, guild_id=self.config.modmail_guild_id) if self.config.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.config.guild_id)
                 for channel in s_guild.channels:
@@ -71,8 +70,7 @@ class ImageSpoilers(commands.Cog):
 
             #if channel is thread channel
             else:
-                s_og_reply_list = thread.find_linked_messages(message1=message)
-                s_og_reply = s_og_reply_list[0]
+                s_og_reply = await thread.find_linked_messages(message1=message)
                 await s_og_reply.delete()
                 s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                 if anonymous is True:
