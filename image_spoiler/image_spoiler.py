@@ -18,6 +18,13 @@ class ImageSpoilers(commands.Cog):
         if message.author.bot:
             return
 
+        #convert attachments to files
+        global s_file_list
+        s_file_list = []
+        for attachment in message.attachments if message.attachments is not None:
+            file = await attachment.to_file()
+            s_file_list.append(file)
+            
         #check if attachment is spoilered
         for attachment in message.attachments:
             if attachment.is_spoiler():
@@ -31,15 +38,15 @@ class ImageSpoilers(commands.Cog):
                     s_guild = discord.utils.get(self.bot.guilds, guild_id=self.config.modmail_guild_id) if self.config.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.config.guild_id)
                     for channel in s_guild.channels:
                         if re.search(f"{str(thread.recipient.id)}", channel.topic):
-                            return await channel.send(content=f"(Response) Recipient: {message.content}", files=message.attachments)
+                            return await channel.send(content=f"(Response) Recipient: {message.content}", files=s_file_list)
 
                 #if channel is thread channel
                 else:
                     s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                     if anonymous is True:
-                        return await s_dm_channel.send(content=f"(Response) {message.author.top_role}: {message.content}", files=message.attachments)
+                        return await s_dm_channel.send(content=f"(Response) {message.author.top_role}: {message.content}", files=s_file_list)
                     else:
-                        return await s_dm_channel.send(content=f"({message.author.top_role}) {str(message.author)}: {message.content}", files=message.attachments)
+                        return await s_dm_channel.send(content=f"({message.author.top_role}) {str(message.author)}: {message.content}", files=s_file_list)
 
         
         #check if links are spoilered
@@ -60,15 +67,15 @@ class ImageSpoilers(commands.Cog):
                 s_guild = discord.utils.get(self.bot.guilds, guild_id=self.config.modmail_guild_id) if self.config.modmail_guild_id is not None else discord.utils.get(self.bot.guilds, guild_id=self.config.guild_id)
                 for channel in s_guild.channels:
                     if re.search(f"{str(thread.recipient.id)}", channel.topic):
-                        return await channel.send(content=f"(Response) Recipient: {message.content}", files=message.attachments)
+                        return await channel.send(content=f"(Response) Recipient: {message.content}", files=s_file_list)
 
             #if channel is thread channel
             else:
                 s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                 if anonymous is True:
-                    return await s_dm_channel.send(content=f"(Response) {message.author.top_role}: {message.content}", files=message.attachments)
+                    return await s_dm_channel.send(content=f"(Response) {message.author.top_role}: {message.content}", files=s_file_list)
                 else:
-                    return await s_dm_channel.send(content=f"({message.author.top_role}) {str(message.author)}: {message.content}", files=message.attachments)
+                    return await s_dm_channel.send(content=f"({message.author.top_role}) {str(message.author)}: {message.content}", files=s_file_list)
         
 def setup(bot):
     bot.add_cog(ImageSpoilers(bot))
