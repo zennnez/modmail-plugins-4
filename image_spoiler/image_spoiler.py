@@ -53,7 +53,7 @@ class ImageSpoilers(commands.Cog):
         #check if links are spoilered
         links = re.findall(r"^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$", message.content)
         for link in links:
-            if re.search(r"(SPOILER_)", link):
+            if re.search(r"(SPOILER_)", str(link)):
                 #if channel is DM channel
                 if message.guild is None:
                     s_og_reply = await thread.find_linked_message_from_dm(message=message)
