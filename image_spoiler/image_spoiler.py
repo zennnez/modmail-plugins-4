@@ -51,29 +51,26 @@ class ImageSpoilers(commands.Cog):
 
         
         #check if links are spoilered
-        links = re.findall(r"/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm", message.content)
-        for link in links:
-            if re.search(r"(SPOILER_)", str(link)):
-                #if channel is DM channel
-                if message.guild is None:
-                    s_og_reply = await thread.find_linked_message_from_dm(message=message)
-                    await s_og_reply.delete()
-                    return await thread.channel.send(content=f"**(Response) Recipient:** {message.content}", files=s_file_list)
+        if re.search(r"(SPOILER_)", message.content):
+            #if channel is DM channel
+            if message.guild is None:
+                s_og_reply = await thread.find_linked_message_from_dm(message=message)
+                await s_og_reply.delete()
+                return await thread.channel.send(content=f"**(Response) Recipient:** {message.content}", files=s_file_list)
 
-                #if channel is thread channel
-                else:
-                    s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
-                    s_msg_list = await s_dm_channel.history(limit=5).flatten()
-                    for msg in s_msg_list:
-                        if msg.author.bot and re.search(r"(SPOILER_)", msg.embeds[0].image.url):
-                            await msg.delete()
-                            break
+            #if channel is thread channel
+            else:
+                s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
+                s_msg_list = await s_dm_channel.history(limit=5).flatten()
+                for msg in s_msg_list:
+                    if msg.author.bot and re.search(r"(SPOILER_)", msg.embeds[0].image.url):
+                        await msg.delete()
+                        break
                     
-                    s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
-                    if anonymous is True:
-                        return await s_dm_channel.send(content=f"**(Response) {str(message.author.top_role)}:** {message.content}", files=s_file_list)
-                    else:
-                        return await s_dm_channel.send(content=f"**({str(message.author.top_role)}) {str(message.author)}:** {message.content}", files=s_file_list)
+                if anonymous is True:
+                    return await s_dm_channel.send(content=f"**(Response) {str(message.author.top_role)}:** {message.content}", files=s_file_list)
+                else:
+                    return await s_dm_channel.send(content=f"**({str(message.author.top_role)}) {str(message.author)}:** {message.content}", files=s_file_list)
 
 def setup(bot):
     bot.add_cog(ImageSpoilers(bot))
