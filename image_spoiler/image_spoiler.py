@@ -18,6 +18,9 @@ class ImageSpoilers(commands.Cog):
         if message.author.bot:
             return
 
+        if thread.recipient.id in self.bot.blocked_users:
+            return await message.add_reaction(self.config.blocked_emoji)
+
         #convert attachments to files
         global s_file_list
         s_file_list = []
@@ -27,11 +30,7 @@ class ImageSpoilers(commands.Cog):
             
         #check if attachment is spoilered
         for attachment in message.attachments:
-            if attachment.is_spoiler():
-                #check if user is blocked
-                if thread.recipient.id in self.bot.blocked_users:
-                    return await message.add_reaction(self.config.blocked_emoji)
-
+            if re.search("SPOILER_", attachment.filename):
                 #if channel is DM channel
                 if message.guild is None:
                     await message.add_reaction(self.config.sent_emoji)
@@ -52,15 +51,11 @@ class ImageSpoilers(commands.Cog):
         #check if links are spoilered
         #links = re.findall("^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$", message.content)
         #for link in links:
-        #if re.search("SPOILER_", link) is True:
+        #if re.search("SPOILER_", link):
         #return await sptr(message=message, anonymous-anonymous)
 
         #check if message contains "SPOILER_"
         if re.search("SPOILER_", message.content):
-            #check if user is blocked
-            if thread.recipient.id in self.bot.blocked_users:
-                return await message.add_reaction(self.config.blocked_emoji)
-
             #if channel is DM channel
             if message.guild is None:
                 await message.add_reaction(self.config.sent_emoji)
