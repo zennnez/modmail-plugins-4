@@ -38,14 +38,15 @@ class ImageSpoilers(commands.Cog):
     @commands.Cog.listener()
     @checks.thread_only()
     async def on_thread_reply(self, thread, from_mod, message, anonymous, plain):
-        s_thread_recipient = self.thread.recipient
         if message.author.bot:
             return
+
+        s_thread_recipient = self.thread.recipient
 
         #check if attachment is spoilered
         for attachment in message.attachments:
             if attachment.is_spoiler():
-                return await sptr(message=message, anonymous-anonymous)
+                return await sptr(message=message, anonymous=anonymous, s_thread_recipient=s_thread_recipient)
         
         #check if links are spoilered
         #links = re.findall("^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$", message.content)
