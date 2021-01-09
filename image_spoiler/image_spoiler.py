@@ -12,7 +12,7 @@ class ImageSpoilers(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def sptr(self, ctx, *, message, anonymous, s_thread_recipient):
+    def sptr(self, ctx, *, message, anonymous, s_thread_recipient):
         #check if user is blocked
         if s_thread_recipient.id in self.bot.blocked_users:
             await ctx.message.add_reaction(self.config.blocked_emoji)
