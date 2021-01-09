@@ -40,8 +40,12 @@ class ImageSpoilers(commands.Cog):
                     for msg in s_msg_list:
                         if msg.author is not self.bot:
                             continue
-                    elif re.search("SPOILER_", msg.embed.description) or re.search("SPOILER_", (msg.embed.fields[0])["Image"]):
-                            await msg.delete()
+                        elif re.search("SPOILER_", msg.embed.description):
+                            dm_msg_list = await thread.find_linked_messages(message1=msg)
+                            dm_msg = dm_msg_list[0]
+                            await dm_msg.delete()
+                            break
+                        elif re.search("SPOILER_", (msg.embed.fields[0])["Image"]):
                             dm_msg_list = await thread.find_linked_messages(message1=msg)
                             dm_msg = dm_msg_list[0]
                             await dm_msg.delete()
@@ -73,11 +77,17 @@ class ImageSpoilers(commands.Cog):
                 for msg in s_msg_list:
                     if msg.author is not self.bot:
                         continue
-                    elif re.search("SPOILER_", msg.embed.description) or re.search("SPOILER_", (msg.embed.fields[0])["Image"]):
+                    elif re.search("SPOILER_", msg.embed.description):
                         dm_msg_list = await thread.find_linked_messages(message1=msg)
                         dm_msg = dm_msg_list[0]
                         await dm_msg.delete()
                         break
+                    elif re.search("SPOILER_", (msg.embed.fields[0])["Image"]):
+                        dm_msg_list = await thread.find_linked_messages(message1=msg)
+                        dm_msg = dm_msg_list[0]
+                        await dm_msg.delete()
+                        break
+
                 s_dm_channel = discord.utils.get(self.bot.private_channels, recipient=thread.recipient)
                 if anonymous is True:
                     return await s_dm_channel.send(content=f"**(Response) {str(message.author.top_role)}:** {message.content}", files=s_file_list)
