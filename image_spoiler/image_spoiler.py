@@ -21,7 +21,7 @@ class ImageSpoilers(commands.Cog):
         #convert attachments to files
         global s_file_list
         s_file_list = []
-        for attachment in message.attachments if message.attachments is not None:
+        for attachment in message.attachments:
             file = await attachment.to_file()
             s_file_list.append(file)
             
