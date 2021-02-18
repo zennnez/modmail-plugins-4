@@ -10,7 +10,7 @@ class MessagePin(commands.Cog):
     @commands.command()
     async def pin(self, ctx, *, channel=discord.TextChannel):
         channel=channel
-        PML = await for channel.history(limit=1).flatten()
+        PML = await channel.history(limit=1).flatten()
         PM = PML[0]
         return await PM.pin()
 
