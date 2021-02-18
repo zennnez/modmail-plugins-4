@@ -11,9 +11,10 @@ class MessagePin(commands.Cog):
     @commands.command()
     async def pin(self, ctx, *, channel):
         CHN = discord.utils.get(ctx.guild.text_channels, id=int(channel))
-        PML = await channel.history(limit=1).flatten()
+        PML = await CHN.history(limit=1).flatten()
         PM = PML[0]
-        return await PM.pin()
+        await PM.pin()
+        return await ctx.send(content="Done!")
 
 def setup(bot):
     bot.add_cog(MessagePin(bot))
