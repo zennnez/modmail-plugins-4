@@ -9,7 +9,7 @@ class Looper(commands.Cog):
 
     @commands.command()
     async def loop(self, ctx, *, role: discord.Role):
-        for m in ctx.members:
+        for m in ctx.guild.members:
             for r in m.roles:
                 if r is role:
                     break
