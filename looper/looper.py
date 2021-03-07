@@ -11,7 +11,8 @@ class Looper(commands.Cog):
     async def loop(self, ctx, *, role: discord.Role):
         for m in ctx.members:
             for r in m.roles:
-                break if r is role else continue
+                if r is role:
+                    break
             else:
                 await ctx.send(content=f"<@{m.id}>")
         return await ctx.send(content="Loop done!")
