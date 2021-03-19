@@ -154,7 +154,7 @@ class ThreadReactions(commands.Cog):
 
     @commands.Cog.listener()
     @checks.thread_only()
-    async def on_thread_ready(self, thread):
+    async def on_thread_ready(self, thread, creator, category, initial_message):
         msg = thread.genesis_message
         for key in thread_reactions:
             if key.isdigit() is True:
