@@ -11,7 +11,7 @@ class MsgSend(commands.Cog):
         self.bot = bot
 
     @commands.group(invoke_without_command = True)
-    @checks.has_permission(PermissionLevel.OWNER)
+    @checks.has_permissions(PermissionLevel.OWNER)
     async def msgsend(self, ctx: commands.Context):
         """
         Lets Modmail sends messge to the server.
@@ -19,7 +19,7 @@ class MsgSend(commands.Cog):
         await ctx.send_help(ctx.command)
 
     @msgsend.command(name="add")
-    @checks.has_permission(PermissionLevel.OWNER)
+    @checks.has_permissions(PermissionLevel.OWNER)
     async def msgsend_add(self, ctx, channel: discord.TextChannel, *, message: str):
         """
         Sends a message to a channel through Modmail.
