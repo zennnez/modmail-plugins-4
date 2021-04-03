@@ -15,11 +15,18 @@ class Looper(commands.Cog):
         """
         if arg is 0:
             for m in ctx.members:
-                continue if role in m.roles else await ctx.send(content=f"<@{m.id}>")
+                if role in m.roles:
+                    continue 
+                else:
+                    await ctx.send(content=f"<@{m.id}>")
             return await ctx.send(content="Loop done!")
-        elif if arg is 1:
+        elif arg is 1:
             for m in ctx.members:
-                continue if role not in m.roles else await ctx.send(content=f"<@{m.id}>")
+                if role not in m.roles:
+                    continue 
+                else:
+                    await ctx.send(content=f"<@{m.id}>")
+            return await ctx.send(content="Loop done!")
             return await ctx.send(content="Loop done!")
         else:
             return await ctx.send(content="Argument must be either 0 or 1.")
