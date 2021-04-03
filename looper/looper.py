@@ -15,14 +15,14 @@ class Looper(commands.Cog):
         Command is case-sensitive.
         """
         if arg is False:
-            for m in ctx.members:
+            for m in ctx.guild.members:
                 if role in m.roles:
                     continue 
                 else:
                     await ctx.send(content=f"<@{m.id}>")
             return await ctx.send(content="Loop done!")
         elif arg is True:
-            for m in ctx.members:
+            for m in ctx.guild.members:
                 if role not in m.roles:
                     continue 
                 else:
