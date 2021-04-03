@@ -27,14 +27,14 @@ class RoleCompare(commands.Cog):
                     role2only += 1 
                 else:
                     neither += 1
-                    
+
         return await ctx.send(content=f"""Total member count: {ctx.guild.member_count}
-            Members with {role1.name}: {role1only + both}
-            Members with {role2.name}: {role2only + both}
-            Members with both roles: {both}
-            Members with only {role1.name}: {role1only}
-            Members with only {role2.name}: {role2only}
-            Members with neither role: {neither}
+        Members with {role1.name}: {role1only + both}
+        Members with {role2.name}: {role2only + both}
+        Members with both roles: {both}
+        Members with only {role1.name}: {role1only}
+        Members with only {role2.name}: {role2only}
+        Members with neither role: {neither}
         """)
 
 def setup(bot):
