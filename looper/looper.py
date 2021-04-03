@@ -13,11 +13,11 @@ class Looper(commands.Cog):
         To list members that have or don't have a specified role.
         0 list members without the role, while 1 lists members with the role.
         """
-        if arg = 0:
+        if arg is 0:
             for m in ctx.members:
                 continue if role in m.roles else await ctx.send(content=f"<@{m.id}>")
             return await ctx.send(content="Loop done!")
-        elif if arg = 1:
+        elif if arg is 1:
             for m in ctx.members:
                 continue if role not in m.roles else await ctx.send(content=f"<@{m.id}>")
             return await ctx.send(content="Loop done!")
