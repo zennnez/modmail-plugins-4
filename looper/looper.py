@@ -8,19 +8,20 @@ class Looper(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def loop(self, ctx, arg: int, *, role: discord.Role):
+    async def loop(self, ctx, arg: bool, *, role: discord.Role):
         """
         To list members that have or don't have a specified role.
-        0 list members without the role, while 1 lists members with the role.
+        False list members without the role, while True lists members with the role.
+        Command is case-sensitive.
         """
-        if arg is 0:
+        if arg is False:
             for m in ctx.members:
                 if role in m.roles:
                     continue 
                 else:
                     await ctx.send(content=f"<@{m.id}>")
             return await ctx.send(content="Loop done!")
-        elif arg is 1:
+        elif arg is True:
             for m in ctx.members:
                 if role not in m.roles:
                     continue 
@@ -29,7 +30,7 @@ class Looper(commands.Cog):
             return await ctx.send(content="Loop done!")
             return await ctx.send(content="Loop done!")
         else:
-            return await ctx.send(content="Argument must be either 0 or 1.")
+            return await ctx.send(content="Argument must be either True or False, case-sensitive.")
 
 def setup(bot):
     bot.add_cog(Looper(bot))
