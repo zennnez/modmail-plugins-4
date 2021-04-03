@@ -8,7 +8,7 @@ class Looper(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def loop(self, ctx, arg = int, *, role: discord.Role):
+    async def loop(self, ctx, arg: int, *, role: discord.Role):
         """
         To list members that have or don't have a specified role.
         0 list members without the role, while 1 lists members with the role.
