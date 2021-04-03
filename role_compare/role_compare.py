@@ -18,9 +18,16 @@ class RoleCompare(commands.Cog):
         neither = 0
         for member in ctx.guild.members:
             if role1 in member.roles:
-                both += 1 if role2 in member.roles else role1only += 1
+                if role2 in member.roles:
+                    both +=1
+                else:
+                    role1only += 1
             else:
-                role2only +- 1 if role2 in member.roles else neither += 1
+                if role2 in member.roles:
+                    role2only += 1 
+                else:
+                    neither += 1
+                    
         return await ctx.send(content=f"""Total member count: {ctx.guild.member_count}
             Members with {role1.name}: {role1only + both}
             Members with {role2.name}: {role2only + both}
