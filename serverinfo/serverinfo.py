@@ -16,7 +16,7 @@ class ServerInfo(commands.Cog):
     async def serversbasic(self, ctx):
         for guild in self.bot.guilds:
             await ctx.send(content=f"{str(guild.id)} | {str(guild.name)}")
-        return await ctx.send(context="done")
+        return await ctx.send(content="done")
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.OWNER)
@@ -24,7 +24,7 @@ class ServerInfo(commands.Cog):
         GLD = discord.utils.get(self.bot.guilds, id=int(guild))
         for channel in GLD.channel:
             await ctx.send(content=f"{str(channel.id)} | {str(channel.name)}")
-        return await ctx.send(context="done")
+        return await ctx.send(content="done")
 
 def setup(bot):
     bot.add_cog(ServerInfo(bot))
