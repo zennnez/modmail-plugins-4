@@ -14,7 +14,7 @@ class ServerInfo(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.OWNER)
     async def serversbasic(self, ctx):
-        for guild in bot.guilds:
+        for guild in self.guilds:
             await ctx.send(content=f"{str(guild.id)} | {str(guild.name)}")
         return await ctx.send(context="done")
 
