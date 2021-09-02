@@ -22,7 +22,7 @@ class ServerInfo(commands.Cog):
     @checks.has_permissions(PermissionLevel.OWNER)
     async def channelnames(self, ctx, *, guild):
         GLD = discord.utils.get(self.bot.guilds, id=int(guild))
-        for channel in GLD.channel:
+        for channel in GLD.channels:
             await ctx.send(content=f"{str(channel.id)} | {str(channel.name)}")
         return await ctx.send(content="done")
 
