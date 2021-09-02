@@ -14,14 +14,15 @@ class ServerInfo(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.OWNER)
     async def serversbasic(self, ctx):
-        for guild in self.guilds:
+        for guild in self.bot.guilds:
             await ctx.send(content=f"{str(guild.id)} | {str(guild.name)}")
         return await ctx.send(context="done")
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.OWNER)
     async def channelnames(self, ctx, *, guild):
-        for channel in guild.channel:
+        GLD = discord.utils.get(self.bot.guilds, id=int(guild))
+        for channel in GLD.channel:
             await ctx.send(content=f"{str(channel.id)} | {str(channel.name)}")
         return await ctx.send(context="done")
 
