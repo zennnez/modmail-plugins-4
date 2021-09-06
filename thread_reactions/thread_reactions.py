@@ -1,6 +1,7 @@
 import asyncio
 import emoji
 import typing
+import pymongo
 
 import discord
 from discord.ext import commands
@@ -37,7 +38,7 @@ class ThreadReactions(commands.Cog):
         To add reactions to thread, do: '{prefix}thr add'
         """
         
-        if self.db.find() is None:
+        if self.db.find({}) is None:
             embed=discord.Embed(
                 color=self.bot.error_color,
                 description="You don\'t have any thread reaction roles at the moment"
@@ -51,7 +52,7 @@ class ThreadReactions(commands.Cog):
             color=self.bot.main_color
         )
             
-        for key in self.db.find():
+        for key in list(self.db.find({})):
             Emote = discord.utils.get(ctx.bot.emojis, id=key["emote"])
             Role = self.bot.guild.get_role(int(key["role"]))
             EmoteName = str(Emote)
@@ -146,7 +147,7 @@ class ThreadReactions(commands.Cog):
         msg = msg[0]
         
         await msg.clear.reactions()
-        for key in self.db.find():
+        for key in list(self.db.find({})):
             if key["emote"].isdigit():
                 Emote = discord.utils.get(ctx.bot.emojis, id=key["emote"])
                 await msg.add_reaction(Emote)
@@ -181,7 +182,7 @@ class ThreadReactions(commands.Cog):
             )
             return await ctx.send(embed=embed)
             
-        for key in self.db.find():
+        for key in list(self.db.find({})):
             if key["emote"].isdigit():
                 Emote = discord.utils.get(ctx.bot.emojis, id=key["emote"])
                 await msg.add_reaction(Emote)
@@ -227,7 +228,7 @@ class ThreadReactions(commands.Cog):
     @checks.thread_only()
     async def on_thread_ready(self, thread):
         msg = thread.genesis_messge
-        for key in self.db.find():
+        for key in list(self.db.find({})):
             if key["emote"].isdigit():
                 Emote = discord.utils.get(self.bot.emojis, id=key["emote"])
                 await msg.add_reaction(Emote)
