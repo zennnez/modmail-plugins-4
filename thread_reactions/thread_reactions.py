@@ -110,7 +110,7 @@ class ThreadReactions(commands.Cog):
             self.db.delete_many(emoteQuery)
         elif self.db.find(roleQuery):
             self.db.delete_many(roleQuery)
-        else
+        else:
             embed = discordEmbed(
                 color=self.bot.error_color,
                 description=f"{str(name)} is already not assigned to a reaction role."
