@@ -11,7 +11,7 @@ from core.models import PermissionLevel
 from core.config import *
 from core.utils import *
 from core.thread import Thread
-
+"""
 class EmojiCO(commands.PartialEmojiConverter):
     async def convert(self, ctx, argument):
         if argument in emoji.UNICODE_EMOJI:
@@ -19,6 +19,12 @@ class EmojiCO(commands.PartialEmojiConverter):
         raise commands.BadArgument("Unknown emoji")
 
 EmojiOBJ = typing.Union[discord.PartialEmoji, discord.Emoji, EmojiCO]
+"""
+"""
+class UniEmoji(commands.PartialEmojiConverter):
+    async def convert(self, ctx, argument):
+"""
+EmojiOBJ= typing.Union[discord.PartialEmoji, discordEmoji]       
 
 class ThreadReactions(commands.Cog):
     def __init__(self, bot):
