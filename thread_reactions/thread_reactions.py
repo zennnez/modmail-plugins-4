@@ -189,7 +189,7 @@ class ThreadReactions(commands.Cog):
                 await msg.add_reaction(Emote)
                 continue
             else:
-            Emote = discord.utils.get(self.bot.emojis, name=key)
+                Emote = discord.utils.get(self.bot.emojis, name=key)
                 await msg.add_reaction(Emote)
                 continue
         return
