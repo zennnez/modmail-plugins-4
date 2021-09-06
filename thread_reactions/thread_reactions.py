@@ -304,7 +304,7 @@ class ThreadReactions(commands.Cog):
     async def on_raw_reaction_remove(self, payload):
     
         if payload.guild_id is None:
-        return
+            return
         
         Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
         Channel = self.bot.get_channel(payload.channel_id)
