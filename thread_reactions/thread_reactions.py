@@ -27,7 +27,7 @@ class ThreadReactions(commands.Cog):
         
     @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.SUPPORTER)
-    async def tr(self, ctx)
+    async def tr(self, ctx):
         """
         Creates reactions to thread genesis message for assigning roles. 
         
@@ -96,7 +96,7 @@ class ThreadReactions(commands.Cog):
         
     @tr.command(name"remove", aliases=["del", "delete"])
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    async def tr_remove(self, ctx, *, name: typing.Union[EmojiOBJ, discord.Role])
+    async def tr_remove(self, ctx, *, name: typing.Union[EmojiOBJ, discord.Role]):
         """
         Removes a reaction role.
         
