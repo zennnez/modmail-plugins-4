@@ -20,11 +20,14 @@ class EmojiCO(commands.PartialEmojiConverter):
 
 EmojiOBJ = typing.Union[discord.PartialEmoji, discord.Emoji, EmojiCO]
 """
-"""
+
 class UniEmoji(commands.PartialEmojiConverter):
-    async def convert(self, ctx, argument):
-"""
-EmojiOBJ= typing.Union[discord.PartialEmoji, discord.Emoji]       
+    async def convert(self, ctx, *, argument):
+        if argument.is_unicode_emoji():
+            return discord.PartialEmoji(name=emoji.demojize(argument), animated=false)
+        raise commands.BadArgument("Unknown emoji")
+        
+EmojiOBJ= typing.Union[discord.PartialEmoji, discord.Emoji, UniEmoji]       
 
 class ThreadReactions(commands.Cog):
     def __init__(self, bot):
