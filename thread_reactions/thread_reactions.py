@@ -72,21 +72,14 @@ class ThreadReactions(commands.Cog):
         To add a reaction, do: '{prefix}tr add emoji role'
         """
 
-        def emojiCheck(arg):
-            if type(arg) == str:
-                arg = emoji.demojize(arg) if arg in emoji.UNICODE_EMOJI["en"] else None
-            else:
-                arg = arg.name if arg.id is None else str(arg.id)
-            return arg
-
-        if not emojiCheck(name):
+        if not self.convert_emoji(name):
             embed = discord.Embed(
                 color=self.bot.error_color,
                 description="Invalid emoji provided"
             )
             return await ctx.send(embed=embed)
 
-        emote = emojiCheck(name)
+        emote = self.convert_emoji(name)
         role = str(value.id)
 
         for key in thread_reactions:
@@ -110,21 +103,14 @@ class ThreadReactions(commands.Cog):
         To remove a reaction, do: '{prefix}tr remove emoji'
         """
 
-        def emojiCheck(arg):
-            if type(arg) == str:
-                arg = emoji.demojize(arg) if arg in emoji.UNICODE_EMOJI["en"] else None
-            else:
-                arg = arg.name if arg.id is None else str(arg.id)
-            return arg
-
-        if not emojiCheck(name):
+        if not self.convert_emoji(name):
             embed = discord.Embed(
                 color=self.bot.error_color,
                 description="Invalid emoji provided"
             )
             return await ctx.send(embed=embed)
 
-        emote = emojiCheck(name)
+        emote = self.convert_emoji(name)
 
         if emote in thread_reactions:
             thread_reactions.pop(emote)
@@ -169,7 +155,7 @@ class ThreadReactions(commands.Cog):
                 await msg.add_reaction(Emote)
                 continue
             else:
-                Emote = discord.utils.get(ctx.bot.emojis, name=key)
+                Emote = commands.EmojiConverter.convert(key)
                 await msg.add_reaction(Emote)
                 continue
         
@@ -189,7 +175,7 @@ class ThreadReactions(commands.Cog):
                 await msg.add_reaction(Emote)
                 continue
             else:
-                Emote = discord.utils.get(self.bot.emojis, name=key)
+                Emote = commands.EmojiConverter.convert(key)
                 await msg.add_reaction(Emote)
                 continue
         return
