@@ -38,7 +38,7 @@ class ThreadReactions(commands.Cog):
         """
         
         plugindb = await self.db.find_one({"_id":
-        if not self.db.count:
+        if self.db.count is None:
             embed=discord.Embed(
                 color=self.bot.error_color,
                 description="You don\'t have any thread reaction roles at the moment"
@@ -212,7 +212,7 @@ class ThreadReactions(commands.Cog):
         msg = await ctx.channel.history(limit=1, oldest_first=True).flatten()
         msg = msg[0]
         
-        if not msg.reactions:
+        if msg.reactions is None:
             embed=discord.Embed(
                 color=self.bot.error_color,
                 description=f"No reactions present. Use `{self.bot.prefix}thr update` or `{self.bot.prefix}thr add` instead."
@@ -244,7 +244,7 @@ class ThreadReactions(commands.Cog):
     @checks.thread_only()
     async def on_raw_reaction_add(self, payload):
     
-        if not payload.guild_id:
+        if payload.guild_id is None:
             return
         
             Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
@@ -255,9 +255,9 @@ class ThreadReactions(commands.Cog):
         
             if User.bot:
                 return   
-            elif not Thread:
+            elif Thread is None:
                 return
-            elif not self.db.find(EmoteQuery):
+            elif self.db.find(EmoteQuery) is None:
                 return
             
             RoleID = int(self.db.find(EmoteQuery)["role"])
@@ -304,7 +304,7 @@ class ThreadReactions(commands.Cog):
     @checks.thread_only()
     async def on_raw_reaction_remove(self, payload):
     
-        if not payload.guild_id:
+        if payload.guild_id is None:
         return
         
         Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
@@ -315,9 +315,9 @@ class ThreadReactions(commands.Cog):
         
         if User.bot:
             return   
-        elif not Thread:
+        elif Thread is None:
             return
-        elif not self.db.find(EmoteQuery):
+        elif self.db.find(EmoteQuery) is None:
             return
             
         RoleID = int(self.db.find(EmoteQuery)["role"])
