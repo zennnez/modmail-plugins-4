@@ -182,6 +182,7 @@ class ThreadReactions(commands.Cog):
     @commands.Cog.listener()
     @checks.thread_only()
     async def on_thread_ready(self, thread):
+        
         msg = thread.genesis_message
         for key in thread_reactions:
             if key.isdigit() is True:
@@ -200,58 +201,64 @@ class ThreadReactions(commands.Cog):
     
         if payload.guild_id is None:
             return await ctx.send(content="No guild ID found")
-        
-            Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
-            Channel = self.bot.modmail_guild.get_channel(payload.channel_id)
-            User = self.bot.guild.get_member(payload.user_id)
-            Thread = await self.bot.threads.find(channel=Channel)
-        
-            if User.bot:
-                return await ctx.send(content="User bot")
-            elif Thread is None:
-                return await ctx.send(content="Thread not found")
-            elif Emote not in thread_reactions:
-                return await ctx.send(content="Emoji not found")
             
-            RoleID = int(thread_reactions[Emote])
-            RoleOBJ= self.bot.guild.get_role(RoleID)
-        
-            if len(Thread.recipients) == 1:
-                RecipientOBJ = Thread.recipients[0]
-                await RecipientOBJ.add_roles(RoleOBJ)
-                embed = discord.Embed(
-                    color=self.bot.main_color,
-                    description=f"Successfully added {str(RoleOBJ)} to {str(RecipientOBJ)}."
-                )
-                return await Channel.send(embed=embed)
-        
-            global recipientEmbed
-            recipientEmbed = discord.Embed(
-                title=f"Recipient Selection for adding {str(RoleOBJ)}",
-                color=self.bot.main_color,
-            )
-        
-            global rE_index
-            rE_index = 0
-        
-            for recipient in Thread.recipients:
-                recipientEmbed.add_field(value=f"{str(rE_index + 1)} - {str(recipient)}")
-                rE_index = rE_index + 1
-                continue
+        global ModmailGuild
+        Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
+        Guild = discord.utils.get(self.bot.guilds, id=self.bot.guild_id)
+        ModmailGuild = discord.utils.get(self.bot.guilds, id=self.bot.modmail_guild_id)
+        Channel = ModmailGuild.get_channel(payload.channel_id)
+        User = Guild.get_member(payload.user_id)
+        Thread = await self.bot.threads.find(channel=Channel)
             
-            await Channel.send(embed=recipientEmbed)
+        if ModmailGuild is None:
+           ModmailGuild = Guild
+        
+        if User.bot:
+            return await ctx.send(content="User bot")
+        elif Thread is None:
+            return await ctx.send(content="Thread not found")
+        elif Emote not in thread_reactions:
+            return await ctx.send(content="Emoji not found")
             
-            def check(m):
-                return m.content.isdigit() and int(m.content) <= rE_index + 1
-                
-            reply = await client.wait_for("message", check=check, timeout=60)
-            RecipientOBJ = Thread.recipients[int(reply)-1]
+        RoleID = int(thread_reactions[Emote])
+        RoleOBJ= Guild.get_role(RoleID)
+        
+        if len(Thread.recipients) == 1:
+            RecipientOBJ = Thread.recipients[0]
             await RecipientOBJ.add_roles(RoleOBJ)
             embed = discord.Embed(
                 color=self.bot.main_color,
                 description=f"Successfully added {str(RoleOBJ)} to {str(RecipientOBJ)}."
             )
-            return await Channel.send(embed=embed)       
+            return await Channel.send(embed=embed)
+        
+        global recipientEmbed
+        recipientEmbed = discord.Embed(
+            title=f"Recipient Selection for adding {str(RoleOBJ)}",
+            color=self.bot.main_color,
+        )
+        
+        global rE_index
+        rE_index = 0
+        
+        for recipient in Thread.recipients:
+            recipientEmbed.add_field(value=f"{str(rE_index + 1)} - {str(recipient)}")
+            rE_index = rE_index + 1
+            continue
+            
+        await Channel.send(embed=recipientEmbed)
+            
+        def check(m):
+            return m.content.isdigit() and int(m.content) <= rE_index + 1
+                
+        reply = await client.wait_for("message", check=check, timeout=60)
+        RecipientOBJ = Thread.recipients[int(reply)-1]
+        await RecipientOBJ.add_roles(RoleOBJ)
+        embed = discord.Embed(
+            color=self.bot.main_color,
+            description=f"Successfully added {str(RoleOBJ)} to {str(RecipientOBJ)}."
+        )
+        return await Channel.send(embed=embed)       
 
     @commands.Cog.listener()
     @checks.thread_only()
@@ -260,57 +267,63 @@ class ThreadReactions(commands.Cog):
         if payload.guild_id is None:
             return await ctx.send(content="No guild ID found")
         
-            Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
-            Channel = self.bot.modmail_guild.get_channel(payload.channel_id)
-            User = self.bot.guild.get_member(payload.user_id)
-            Thread = await self.bot.threads.find(channel=Channel)
-        
-            if User.bot:
-                return await ctx.send(content="User bot")
-            elif Thread is None:
-                return await ctx.send(content="Thread not found")
-            elif Emote not in thread_reactions:
-                return await ctx.send(content="Emote not found")
+        global ModmailGuild
+        Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
+        Guild = discord.utils.get(self.bot.guilds, id=self.bot.guild_id)
+        ModmailGuild = discord.utils.get(self.bot.guilds, id=self.bot.modmail_guild_id)
+        Channel = ModmailGuild.get_channel(payload.channel_id)
+        User = Guild.get_member(payload.user_id)
+        Thread = await self.bot.threads.find(channel=Channel)
             
-            RoleID = int(thread_reactions[Emote])
-            RoleOBJ= self.bot.guild.get_role(RoleID)
+        if ModmailGuild is None:
+           ModmailGuild = Guild
         
-            if len(Thread.recipients) == 1:
-                RecipientOBJ = Thread.recipients[0]
-                await RecipientOBJ.remove_roles(RoleOBJ)
-                embed = discord.Embed(
-                    color=self.bot.main_color,
-                    description=f"Successfully removed {str(RoleOBJ)} to {str(RecipientOBJ)}."
-                )
-                return await Channel.send(embed=embed)
+        if User.bot:
+            return await ctx.send(content="User bot")
+        elif Thread is None:
+            return await ctx.send(content="Thread not found")
+        elif Emote not in thread_reactions:
+            return await ctx.send(content="Emote not found")
+       
+        RoleID = int(thread_reactions[Emote])
+        RoleOBJ= Guild.get_role(RoleID)
         
-            global recipientEmbed
-            recipientEmbed = discord.Embed(
-                title=f"Recipient Selection for removing {str(RoleOBJ)}",
-                color=self.bot.main_color,
-            )
-        
-            global rE_index
-            rE_index = 0
-        
-            for recipient in Thread.recipients:
-                recipientEmbed.add_field(value=f"{str(rE_index + 1)} - {str(recipient)}")
-                rE_index = rE_index + 1
-                continue
-            
-            await Channel.send(embed=recipientEmbed)
-            
-            def check(m):
-                return m.content.isdigit() and int(m.content) <= rE_index + 1
-                
-            reply = await client.wait_for("message", check=check, timeout=60)
-            RecipientOBJ = Thread.recipients[int(reply)-1]
+        if len(Thread.recipients) == 1:
+            RecipientOBJ = Thread.recipients[0]
             await RecipientOBJ.remove_roles(RoleOBJ)
             embed = discord.Embed(
                 color=self.bot.main_color,
-                description=f"Successfully removedd {str(RoleOBJ)} to {str(RecipientOBJ)}."
+                description=f"Successfully removed {str(RoleOBJ)} to {str(RecipientOBJ)}."
             )
-            return await Channel.send(embed=embed)          
+            return await Channel.send(embed=embed)
+        
+        global recipientEmbed
+        recipientEmbed = discord.Embed(
+            title=f"Recipient Selection for removing {str(RoleOBJ)}",
+            color=self.bot.main_color,
+        )
+        
+        global rE_index
+        rE_index = 0
+        
+        for recipient in Thread.recipients:
+            recipientEmbed.add_field(value=f"{str(rE_index + 1)} - {str(recipient)}")
+            rE_index = rE_index + 1
+            continue
+            
+        await Channel.send(embed=recipientEmbed)
+            
+        def check(m):
+            return m.content.isdigit() and int(m.content) <= rE_index + 1
+           
+        reply = await client.wait_for("message", check=check, timeout=60)
+        RecipientOBJ = Thread.recipients[int(reply)-1]
+        await RecipientOBJ.remove_roles(RoleOBJ)
+        embed = discord.Embed(
+            color=self.bot.main_color,
+            description=f"Successfully removedd {str(RoleOBJ)} to {str(RecipientOBJ)}."
+        )
+        return await Channel.send(embed=embed)          
 
 def setup(bot):
     bot.add_cog(ThreadReactions(bot))
