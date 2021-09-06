@@ -79,6 +79,13 @@ class ThreadReactions(commands.Cog):
                 arg = arg.name if arg.id is None else str(arg.id)
             return arg
 
+        if not emojiCheck(name):
+            embed = discord.Embed(
+                color=self.bot.error_color,
+                description="Invalid emoji provided"
+            )
+            return await ctx.send(embed=embed)
+
         emote = await emojiCheck(name)
         role = str(value.id)
 
@@ -109,6 +116,13 @@ class ThreadReactions(commands.Cog):
             else:
                 arg = arg.name if arg.id is None else str(arg.id)
             return arg
+
+        if not emojiCheck(name):
+            embed = discord.Embed(
+                color=self.bot.error_color,
+                description="Invalid emoji provided"
+            )
+            return await ctx.send(embed=embed)
 
         emote = await emojiCheck(name)
 
