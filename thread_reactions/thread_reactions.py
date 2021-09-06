@@ -199,7 +199,7 @@ class ThreadReactions(commands.Cog):
     async def on_raw_reaction_add(self, payload):
     
         if payload.guild_id is None:
-            return
+            return await ctx.send(content="No guild ID found")
         
             Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
             Channel = self.bot.modmail_guild.get_channel(payload.channel_id)
@@ -207,11 +207,11 @@ class ThreadReactions(commands.Cog):
             Thread = await self.bot.threads.find(channel=Channel)
         
             if User.bot:
-                return   
+                return await ctx.send(content="User bot")
             elif Thread is None:
-                return
+                return await ctx.send(content="Thread not found")
             elif Emote not in thread_reactions:
-                return
+                return await ctx.send(content="Emoji not found")
             
             RoleID = int(thread_reactions[Emote])
             RoleOBJ= self.bot.guild.get_role(RoleID)
@@ -258,7 +258,7 @@ class ThreadReactions(commands.Cog):
     async def on_raw_reaction_remove(self, payload):
     
         if payload.guild_id is None:
-            return
+            return await ctx.send(content="No guild ID found")
         
             Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
             Channel = self.bot.modmail_guild.get_channel(payload.channel_id)
@@ -266,11 +266,11 @@ class ThreadReactions(commands.Cog):
             Thread = await self.bot.threads.find(channel=Channel)
         
             if User.bot:
-                return   
+                return await ctx.send(content="User bot")
             elif Thread is None:
-                return
+                return await ctx.send(content="Thread not found")
             elif Emote not in thread_reactions:
-                return
+                return await ctx.send(content="Emote not found")
             
             RoleID = int(thread_reactions[Emote])
             RoleOBJ= self.bot.guild.get_role(RoleID)
