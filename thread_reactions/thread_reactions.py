@@ -135,7 +135,7 @@ class ThreadReactions(commands.Cog):
     
     @thr.command(name="update")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    @checks.thread_only
+    @checks.thread_only()
     async def thr_update(self, ctx):
     
         """
@@ -163,7 +163,7 @@ class ThreadReactions(commands.Cog):
             
     @thr.command(name="add")
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    @checks.thread_only
+    @checks.thread_only()
     async def thr_add(self, ctx):
         """
         Adds reactions on thread genesis message.
@@ -198,7 +198,7 @@ class ThreadReactions(commands.Cog):
     
     @thr.command(name="remove", aliases=["del", "delete"])
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
-    @checks.thread_only
+    @checks.thread_only()
     async def thr_remove(self, ctx):
         """
         Removes reactions from thread genesis message.
