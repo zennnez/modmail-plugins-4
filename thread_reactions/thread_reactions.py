@@ -19,15 +19,9 @@ class EmojiCO(commands.PartialEmojiConverter):
         raise commands.BadArgument("Unknown emoji")
 
 EmojiOBJ = typing.Union[discord.PartialEmoji, discord.Emoji, EmojiCO]
-"""
-
-class UniEmoji(commands.PartialEmojiConverter):
-    async def convert(self, ctx, *, argument):
-        if argument.is_unicode_emoji():
-            return discord.PartialEmoji(name=emoji.demojize(argument), animated=false)
-        raise commands.BadArgument("Unknown emoji")
+"""     
         
-EmojiOBJ= typing.Union[discord.PartialEmoji, discord.Emoji, UniEmoji]       
+EmojiOBJ= typing.Union[discord.PartialEmoji, discord.Emoji, str]       
 
 class ThreadReactions(commands.Cog):
     def __init__(self, bot):
@@ -78,7 +72,14 @@ class ThreadReactions(commands.Cog):
         To add a reaction, do: '{prefix}tr add emoji role'
         """
 
-        emote = name.name if name.id is None else str(name.id)
+        def emojiCheck(arg):
+            if type(arg) == str:
+                arg = emoji.demojize(arg) if arg in emoji.UNICODE_EMOJI else None
+            else:
+                arg = arg.name if arg.id is None else str(arg.id)
+            return arg
+
+        emote = await emojiCheck(name)
         role = str(value.id)
 
         for key in thread_reactions:
@@ -102,7 +103,14 @@ class ThreadReactions(commands.Cog):
         To remove a reaction, do: '{prefix}tr remove emoji'
         """
 
-        emote = name.name if name.id is None else str(name.id)
+        def emojiCheck(arg):
+            if type(arg) == str:
+                arg = emoji.demojize(arg) if arg in emoji.UNICODE_EMOJI else None
+            else:
+                arg = arg.name if arg.id is None else str(arg.id)
+            return arg
+
+        emote = await emojiCheck(name)
 
         if emote in thread_reactions:
             thread_reactions.pop(emote)
