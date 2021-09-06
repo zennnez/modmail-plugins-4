@@ -15,7 +15,7 @@ from core.thread import Thread
 class EmojiCO(commands.PartialEmojiConverter):
     async def convert(self, ctx, argument):
         if argument in emoji.UNICODE_EMOJI:
-            return discord.PartialEmoji(name=argument, animated=False)
+            return discord.PartialEmoji(name=emoji.demojize(argument), animated=False)
         raise commands.BadArgument("Unknown emoji")
 
 EmojiOBJ = typing.Union[discord.PartialEmoji, discord.Emoji, EmojiCO]
