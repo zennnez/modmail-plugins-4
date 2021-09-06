@@ -72,14 +72,21 @@ class ThreadReactions(commands.Cog):
         To add a reaction, do: '{prefix}tr add emoji role'
         """
 
-        if not self.convert_emoji(name):
+        def emojiCheck(arg):
+            if type(arg) == str:
+                arg = emoji.demojize(arg) if arg in emoji.UNICODE_EMOJI["en"] else None
+            else:
+                arg = arg.name if arg.id is None else str(arg.id)
+            return arg
+
+        if not emojiCheck(name):
             embed = discord.Embed(
                 color=self.bot.error_color,
                 description="Invalid emoji provided"
             )
             return await ctx.send(embed=embed)
 
-        emote = self.convert_emoji(name)
+        emote = emojiCheck(name)
         role = str(value.id)
 
         for key in thread_reactions:
@@ -103,14 +110,21 @@ class ThreadReactions(commands.Cog):
         To remove a reaction, do: '{prefix}tr remove emoji'
         """
 
-        if not self.convert_emoji(name):
+        def emojiCheck(arg):
+            if type(arg) == str:
+                arg = emoji.demojize(arg) if arg in emoji.UNICODE_EMOJI["en"] else None
+            else:
+                arg = arg.name if arg.id is None else str(arg.id)
+            return arg
+
+        if not emojiCheck(name):
             embed = discord.Embed(
                 color=self.bot.error_color,
                 description="Invalid emoji provided"
             )
             return await ctx.send(embed=embed)
 
-        emote = self.convert_emoji(name)
+        emote = emojiCheck(name)
 
         if emote in thread_reactions:
             thread_reactions.pop(emote)
