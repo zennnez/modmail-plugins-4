@@ -38,7 +38,7 @@ class ThreadReactions(commands.Cog):
         """
         
         plugindb = await self.db.find_one({"_id":
-        if self.db.count is None:
+        if self.db.count() is None:
             embed=discord.Embed(
                 color=self.bot.error_color,
                 description="You don\'t have any thread reaction roles at the moment"
