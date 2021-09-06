@@ -93,7 +93,7 @@ class ThreadReactions(commands.Cog):
         )
         return await ctx.send(embed=embed)
         
-    @tr.command(name"remove", aliases=["del", "delete"])
+    @tr.command(name="remove", aliases=["del", "delete"])
     @checks.has_permissions(PermissionLevel.ADMINISTRATOR)
     async def tr_remove(self, ctx, *, name: typing.Union[EmojiOBJ, discord.Role]):
         """
