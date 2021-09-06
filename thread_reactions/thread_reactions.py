@@ -150,7 +150,7 @@ class ThreadReactions(commands.Cog):
         await msg.clear.reactions()
         for key in self.db.find():
             if key["emote"].isdigit():
-                Emote = discord.utils.get(ctx.bot.emojis, id=key["emote'})
+                Emote = discord.utils.get(ctx.bot.emojis, id=key["emote'])
                 await msg.add_reaction(Emote)
                 continue
             else:
@@ -185,7 +185,7 @@ class ThreadReactions(commands.Cog):
             
         for key in self.db.find():
             if key["emote"].isdigit():
-                Emote = discord.utils.get(ctx.bot.emojis, id=key["emote'})
+                Emote = discord.utils.get(ctx.bot.emojis, id=key["emote'])
                 await msg.add_reaction(Emote)
                 continue
             else:
