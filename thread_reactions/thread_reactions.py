@@ -74,7 +74,7 @@ class ThreadReactions(commands.Cog):
 
         def emojiCheck(arg):
             if type(arg) == str:
-                arg = emoji.demojize(arg) if arg in emoji.UNICODE_EMOJI else None
+                arg = emoji.demojize(arg) if arg in emoji.EMOJI_UNICODE_ENGLISH else None
             else:
                 arg = arg.name if arg.id is None else str(arg.id)
             return arg
