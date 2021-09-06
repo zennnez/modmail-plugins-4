@@ -24,7 +24,7 @@ EmojiOBJ = typing.Union[discord.PartialEmoji, discord.Emoji, EmojiCO]
 class UniEmoji(commands.PartialEmojiConverter):
     async def convert(self, ctx, argument):
 """
-EmojiOBJ= typing.Union[discord.PartialEmoji, discordEmoji]       
+EmojiOBJ= typing.Union[discord.PartialEmoji, discord.Emoji]       
 
 class ThreadReactions(commands.Cog):
     def __init__(self, bot):
