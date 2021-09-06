@@ -78,10 +78,8 @@ class ThreadReactions(commands.Cog):
         
         if self.db.find(emoteQuery):
             self.db.delete_many(emoteQuery)
-            break
         elif self.db.find(roleQuery):
             self.db.delete_many(roleQuery)
-            break
             
         doc = { "emote":emote, "role":role }
         await self.db.insert_one(doc)
