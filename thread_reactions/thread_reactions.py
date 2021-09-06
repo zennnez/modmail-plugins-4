@@ -123,7 +123,7 @@ class ThreadReactions(commands.Cog):
         return await ctx.send(embed=embed)
     
     @commands.group(invoke_without_command=True)
-    @checks.has.permissions(PermissionLevel.SUPPORTER)
+    @checks.has_permissions(PermissionLevel.SUPPORTER)
     @checks.thread_only()
     async def thr(self, ctx):
         """
