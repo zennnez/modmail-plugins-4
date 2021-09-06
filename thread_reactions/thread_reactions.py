@@ -37,7 +37,6 @@ class ThreadReactions(commands.Cog):
         To add reactions to thread, do: '{prefix}thr add'
         """
         
-        plugindb = await self.db.find_one({"_id":
         if self.db.count() is None:
             embed=discord.Embed(
                 color=self.bot.error_color,
