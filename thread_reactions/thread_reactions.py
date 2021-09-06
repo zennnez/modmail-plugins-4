@@ -169,7 +169,7 @@ class ThreadReactions(commands.Cog):
                 await msg.add_reaction(Emote)
                 continue
             else:
-                Emote = commands.EmojiConverter.convert(key)
+                Emote = commands.EmojiConverter.convert(ctx, argument=key)
                 await msg.add_reaction(Emote)
                 continue
         
@@ -189,7 +189,7 @@ class ThreadReactions(commands.Cog):
                 await msg.add_reaction(Emote)
                 continue
             else:
-                Emote = commands.EmojiConverter.convert(key)
+                Emote = commands.EmojiConverter.convert(ctx, argument=key)
                 await msg.add_reaction(Emote)
                 continue
         return
