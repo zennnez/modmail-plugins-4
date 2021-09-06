@@ -37,7 +37,7 @@ class ThreadReactions(commands.Cog):
         To add reactions to thread, do: '{prefix}thr add'
         """
         
-        if self.db.count() is None:
+        if self.db.find() is None:
             embed=discord.Embed(
                 color=self.bot.error_color,
                 description="You don\'t have any thread reaction roles at the moment"
@@ -245,8 +245,8 @@ class ThreadReactions(commands.Cog):
             return
         
             Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
-            Channel = self.bot.get_channel(payload.channel_id)
-            User = self.bot.get_member(payload.user_id)
+            Channel = self.bot.modmail_guild.get_channel(payload.channel_id)
+            User = self.bot.guild.get_member(payload.user_id)
             Thread = await self.bot.threads.find(channel=Channel)
             EmoteQuery = { "emote": Emote }
         
@@ -305,8 +305,8 @@ class ThreadReactions(commands.Cog):
             return
         
         Emote = payload.emoji.name if payload.emoji.id is None else str(payload.emoji.id)
-        Channel = self.bot.get_channel(payload.channel_id)
-        User = self.bot.get_member(payload.user_id)
+        Channel = self.bot.modmail_guild.get_channel(payload.channel_id)
+        User = self.bot.guild.get_member(payload.user_id)
         Thread = await self.bot.threads.find(channel=Channel)
         EmoteQuery = { "emote": Emote }
         
