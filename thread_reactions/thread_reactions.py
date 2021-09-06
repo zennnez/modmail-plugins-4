@@ -74,7 +74,7 @@ class ThreadReactions(commands.Cog):
 
         def emojiCheck(arg):
             if type(arg) == str:
-                arg = emoji.demojize(arg) if arg in emoji.EMOJI_UNICODE_ENGLISH else None
+                arg = emoji.demojize(arg) if arg in UNICODE_EMOJI["en"] else None
             else:
                 arg = arg.name if arg.id is None else str(arg.id)
             return arg
@@ -86,7 +86,7 @@ class ThreadReactions(commands.Cog):
             )
             return await ctx.send(embed=embed)
 
-        emote = await emojiCheck(name)
+        emote = emojiCheck(name)
         role = str(value.id)
 
         for key in thread_reactions:
@@ -124,7 +124,7 @@ class ThreadReactions(commands.Cog):
             )
             return await ctx.send(embed=embed)
 
-        emote = await emojiCheck(name)
+        emote = emojiCheck(name)
 
         if emote in thread_reactions:
             thread_reactions.pop(emote)
